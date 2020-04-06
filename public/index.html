@@ -4,24 +4,69 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>COVID-19 | Tracker</title>
-</head>
-<body>
-  <div>
-    <h1>World</h1>
-    <ul>
-      <li><label>Confirmed Cases: <label id=world-con></label></label></li>
-      <li><label>Deaths: <label id=world-dea></label></label></li>
-      <li><label>Recovered: <label id=world-rec></label></label></li>
-    </ul>
 
-    <h1>Philippines</h1>
-    <ul>
-      <li><label>Confirmed Cases: <label id=ph-con></label></label></li>
-      <li><label>Deaths: <label id=ph-dea></label></label></li>
-      <li><label>Recovered: <label id=ph-rec></label></label></li>
-    </ul>
+  <link href=css/materialize.min.css rel=stylesheet media="screen, projection">
+  <link href=css/index.css rel=stylesheet>
+</head>
+<body class="">
+  <div class=container>
+    <div class=row>
+      <h3 class="white-text header-no-bottom">COVID-19</h3>
+      <span id=last-updated class="grey-text last-update-date">Monday, April 6, 2020</span>
+    </div>
+    <div class="card grey darken-3">
+      <div class="card-content card-title-container">
+        <span class="country card-title grey-text text-lighten-3">
+          World
+          <i data-target=world-more class="waves-effect dropdown-trigger material-icons right">more_vert</i>
+          <ul id=world-more class="dropdown-content grey darken-3">
+            <li><a class="waves-effect white-text">Remove</a></li>
+            <li><a class="waves-effect white-text">Minimize</a></li>
+          </ul>
+        </span>
+      </div>
+      <div class="card-content grey darken-4">
+        <div class="row row-no-bottom">
+          <div class="row row-no-bottom">
+            <span class="grey-text">Confirmed Cases</span>
+          </div>
+          <div class="row row-no-bottom">
+            <span class="number grey-text text-lighten-2" id=world-confirmed>000,000,000</span>
+          </div>
+        </div>
+
+        <div class="row row-no-bottom">
+          <div class="col s12 m6">
+            <div class="row row-no-bottom">
+              <span class="grey-text">Deaths</span>
+            </div>
+            <div class="row row-no-bottom">
+              <span class="number red-text text-lighten-1" id=world-deaths>000,000</span>
+            </div>
+          </div>
+
+          <div class="col s12 m6">
+            <div class="row row-no-bottom">
+              <span class="grey-text">Recovered</span>
+            </div>
+
+            <div class="row row-no-bottom">
+              <span class="number green-text text-lighten-1" id=world-recovered>000,000</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fixed-action-btn">
+      <a class="btn-floating btn-large red">
+        <i class="large material-icons">add</i>
+      </a>
+    </div>
   </div>
 
-  <script src=../read_data.js></script>
+  <script src=js/materialize.min.js></script>
+  <script src=js/index.js></script>
+  <script src=read_data.js></script>
 </body>
 </html>

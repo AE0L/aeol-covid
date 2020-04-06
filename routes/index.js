@@ -1,7 +1,7 @@
 const express = require('express')
 const router  = express.Router()
 const fs      = require('fs')
-const covid   = require('../public/covid')
+const covid   = require('../routes/covid')
 
 router.get('/', (req, res) => {
     res.sendFile('index.html')
@@ -24,6 +24,18 @@ router.post('/country', (req, res) => {
         const json = JSON.parse(raw)
 
         res.json(json.result.filter(c => Object.keys(c)[0] === country)[0][country])
+    })
+})
+
+router.post('/countries', (req, res) => {
+    const { countries } = req.body
+
+    fs.readFile('./data/GLOBAL_COVID.json', (err, raw) => {
+        if (err) { throw err }
+
+        const json = JSON.parse(raw)
+
+        res.json(json.result.filter(c => countries.includes(Object.keys(c)[0])))
     })
 })
 

@@ -2,7 +2,7 @@ const express     = require('express')
 const app         = express()
 const path        = require('path')
 const routes      = require('./routes')
-const covid       = require('./public/covid')
+const covid       = require('./routes/covid')
 const body_parser = require('body-parser')
 
 const {  PORT, NODE_ENV } = require('./config')
