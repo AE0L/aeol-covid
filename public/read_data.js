@@ -1,12 +1,12 @@
 async function covid_world() {
-    const res  = await fetch('http://localhost:8080/global')
+    const res  = await fetch('/global')
     const data = await res.json()
 
     return data
 }
 
 async function covid_country(country) {
-    const res = await fetch('http://localhost:8080/country', {
+    const res = await fetch('/country', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -19,7 +19,7 @@ async function covid_country(country) {
 }
 
 async function covid_countries(countries) {
-    const res = await fetch('http://localhost:8080/countries', {
+    const res = await fetch('/countries', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
