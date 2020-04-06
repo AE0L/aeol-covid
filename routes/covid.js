@@ -17,8 +17,8 @@ async function fetch_latest_covid_data() {
     })
 
     const global_data   = await fetch(COVID_GLOBAL_URL)
-    const global_json   = await globaL_data.json()
-    const global_string = await JSNO.stringify(global_json)
+    const global_json   = await global_data.json()
+    const global_string = await JSON.stringify(global_json)
 
     fs.writeFile('./data/GLOBAL_COVID.json', global_string, err => {
         if (err) { console.log(err) }
