@@ -1,0 +1,81 @@
+@use '@material/theme' with (
+  $background: #121212,
+  $surface:    #212121,
+  $primary:    #66BB6A,
+  $secondary:  #EF5350
+);
+
+@use '@material/theme/mdc-theme';
+
+@use '@material/typography' with (
+  $font-family: unquote('Muli, sans-serif')
+);
+
+@use '@material/typography/mdc-typography';
+@use '@material/fab/mdc-fab';
+@use '@material/card/mdc-card';
+@use '@material/card';
+@use '@material/layout-grid/mdc-layout-grid';
+@use '@material/icon-button/mdc-icon-button';
+@use '@material/top-app-bar/mdc-top-app-bar';
+@use '@material/top-app-bar';
+
+@import '~normalize.css';
+
+$background: theme.prop-value(background);
+$on-background: theme.prop-value(text-primary-on-background);
+
+html, body {
+  height: 200%;
+}
+
+body {
+  background: theme.prop-value(background);
+  font-family: 'Muli', sans-serif;
+}
+
+.main-container {
+  padding-top: 1em;
+}
+
+.add-fab {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+}
+
+.mdc-top-app-bar {
+  @include top-app-bar.fill-color-accessible($background);
+  @include top-app-bar.icon-ink-color($on-background);
+}
+
+.mdc-card {
+  @include card.shape-radius(10px, false);
+}
+
+.mdc-layout-grid.card__data-grid {
+  width: 100%;
+}
+
+.card__title {
+  padding: 12px;
+}
+
+.card__label {
+  @extend .mdc-layout-grid__cell;
+
+  color: theme.prop-value(text-secondary-on-dark);
+  margin-bottom: 0.5rem;
+}
+
+.card__value {
+  @extend .mdc-typography--headline4;
+}
+
+.card__value.death {
+  color: theme.prop-value(secondary);
+}
+
+.card__value.recovered {
+  color: theme.prop-value(primary);
+}

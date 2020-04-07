@@ -1,42 +1,53 @@
 const express = require('express')
 const router  = express.Router()
 const fs      = require('fs')
-const covid   = require('../routes/covid')
+const covid   = require('../data/LATEST_DATA.json')
 
 router.get('/', (req, res) => {
     res.sendFile('index.html')
 })
 
 router.get('/global', (req, res) => {
-    fs.readFile('./data/WORLD_COVID.json', (err, data) => {
-        if (err) { throw err }
+    res.json(covid.world)
+})
 
-        res.json(JSON.parse(data).result)
-    })
+router.get('/latest-date', (req, res) => {
+    res.json(covid.date)
 })
 
 router.post('/country', (req, res) => {
     const { country } = req.body
 
-    fs.readFile('./data/GLOBAL_COVID.json', (err, raw) => {
-        if (err) { throw err }
-
-        const json = JSON.parse(raw)
-
-        res.json(json.result.filter(c => Object.keys(c)[0] === country)[0][country])
-    })
+    if (covid.countries.includes(country)) {
+        res.json(covid.result[country])
+    } else {
+        res.status(400).send({
+            message: `Invalid country, ${country}`,
+        })
+    }
 })
 
 router.post('/countries', (req, res) => {
     const { countries } = req.body
 
-    fs.readFile('./data/GLOBAL_COVID.json', (err, raw) => {
-        if (err) { throw err }
+    const result = []
 
-        const json = JSON.parse(raw)
+    for (const country of countries) {
+        if (covid.includes(country)) {
+            result.push({
+                country:   country,
+                confirmed: covid.result[country].confirmed,
+                deaths:    covid.result[country].deaths,
+                recovered: covid.result[country].recovered
+            })
+        } else {
+            res.status(400).send({
+                message: `Invalid country, ${country}`
+            })
+        }
+    }
 
-        res.json(json.result.filter(c => countries.includes(Object.keys(c)[0])))
-    })
+    res.json(result)
 })
 
 module.exports = router

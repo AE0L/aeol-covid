@@ -1,52 +1,64 @@
 const cron  = require('node-cron')
+const path  = require('path')
 const fs    = require('fs')
 const fetch = require('node-fetch')
+const { NODE_ENV } = require('../config')
 
-const COVID_WORLD_URL  = 'https://covidapi.info/api/v1/global'
-const COVID_GLOBAL_URL = 'https://covidapi.info/api/v1/global/latest'
+const TIME_SERIES_LATEST = 'https://pomber.github.io/covid19/timeseries.json'
+const DATA_PATH          = path.resolve(__dirname, 'data')
 
 async function fetch_latest_covid_data() {
-    const world_data   = await fetch(COVID_WORLD_URL)
-    const world_json   = await world_data.json()
-    const world_string = await JSON.stringify(world_json)
+    const covid_data  = await fetch(TIME_SERIES_LATEST)
+    const covid_json  = await covid_data.json()
+    const entries     = Object.freeze(Object.entries(covid_json))
+    const countries   = Object.freeze(Object.keys(covid_json))
+    const latest_data = { 
+        date:      entries[0][1][entries[0][1].length - 1].date,
+        countries: countries,
+        world:     {
+            confirmed: 0,
+            deaths:    0,
+            recovered: 0
+        },
+        result:    { }
+    }
 
-    fs.writeFile('./data/WORLD_COVID.json', world_string, err => {
-        if (err) { console.log(err) }
+    for (const country of countries) {
+        const data   = covid_json[country]
+        const latest = (d) => data[data.length - 1][d]
 
-        console.log('COVID-19 latest world data received...')
-    })
+        const confirmed = latest('confirmed')
+        const deaths    = latest('deaths')
+        const recovered = latest('recovered')
 
-    const global_data   = await fetch(COVID_GLOBAL_URL)
-    const global_json   = await global_data.json()
-    const global_string = await JSON.stringify(global_json)
+        latest_data.world.confirmed += confirmed
+        latest_data.world.deaths    += deaths
+        latest_data.world.recovered += recovered
 
-    fs.writeFile('./data/GLOBAL_COVID.json', global_string, err => {
-        if (err) { console.log(err) }
+        latest_data.result[country] = {
+            confirmed: confirmed,
+            deaths:    deaths,
+            recovered: recovered
+        }
+    }
 
-        console.log('COVID-19 latest global data received...')
+    const latest_data_string = await JSON.stringify(latest_data)
+
+    fs.writeFile('./data/LATEST_DATA.json', latest_data_string, (err) => {
+        if (err) throw err
+
+        console.log('LATEST_DATA.json updated')
     })
 }
 
 function setup() {
-    // 0:00 AM
-    cron.schedule('0 0 * * *', () => {
-        console.log('Fetching 0:00 AM COVID-19 data')
+    cron.schedule('30 0,2,12 * * *', () => {
         fetch_latest_covid_data()
     })
 
-    // 8:00 AM
-    cron.schedule('0 8 * * * ', () => {
-        console.log('Fetching 8:00 AM COVID-19 data')
+    if (NODE_ENV === 'production') {
         fetch_latest_covid_data()
-    })
-
-    // 4:00 PM
-    cron.schedule('0 16 * * *', () => {
-        console.log('Fetching 4:00 PM COVID-19 data')
-        fetch_latest_covid_data()
-    })
-
-    fetch_latest_covid_data()
+    }
 }
 
 module.exports = {

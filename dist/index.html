@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>COVID-19 | Tracker</title>
+
+  <link href=build.css rel=stylesheet media="screen,projection">
+  <link href=css/index.css rel=stylesheet media="screen,projection">
+</head>
+<body id=body>
+  <header id=top-app-bar class="mdc-top-app-bar mcd-top-app-bar--fixed">
+    <div class="mdc-top-app-bar__row">
+      <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+        <span class="mdc-top-app-bar__title">COVID-19</span>
+      </section>
+      <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role=toolbar>
+        <span class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="theme">brightness_low</span>
+      </section>
+    </div>
+  </header>
+
+  <main class="mdc-layout-grid mdc-top-app-bar--fixed-adjust">
+    <div id=card-container class="main-container mdc-layout-grid__inner">
+      <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+        <div class="mdc-theme--surface mdc-card">
+          <div class="mdc-card__actions">
+            <span class="card__title mdc-theme--text-primary-on-dark">World</span>
+            <div class="mdc-card__action-icons">
+              <button class="material-icons mdc-icon-button mdc-card__action mdc-card__action-icon">more_vert</button>
+            </div>
+          </div>
+          
+          <div class="mdc-card__actions">
+            <div class="card__data-grid mdc-layout-grid">
+              <div class="mdc-layout-grid__inner">
+                <div class="mdc-layout-grid__cell--span-12-tablet mdc-layout-grid__cell--span-12-phone mdc-layout-grid__cell--span-4-desktop">
+                  <div class="mdc-layout-grid__cell">
+                    <div class="card__label">Confirmed Cases</div>
+                  </div>
+                  <div class="mdc-layout-grid__cell">
+                    <div class=mdc-layout-grid__cell>
+                      <span class="card__value mdc-theme--text-primary-on-dark" id=world-confirmed>0,000,000</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="mdc-layout-grid__cell--span-4-tablet mdc-layout-grid__cell--span-12-phone mdc-layout-grid__cell--span-4-desktop">
+                 <div class="mdc-layout-grid__cell">
+                    <div class="card__label">Deaths</div>
+                  </div>
+                  <div class="mdc-layout-grid__cell">
+                    <div class=mdc-layout-grid__cell>
+                      <span class="card__value death" id=world-deaths>0,000,000</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="mdc-layout-grid__cell--span-4-tablet mdc-layout-grid__cell--span-12-phone mdc-layout-grid__cell--span-4-desktop">
+                  <div class="mdc-layout-grid__cell">
+                    <div class="card__label">Recovered</div>
+                  </div>
+                  <div class="mdc-layout-grid__cell">
+                    <div class=mdc-layout-grid__cell>
+                      <span class="card__value recovered" id=world-recovered>0,000,000</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <button id=add-fab class="mdc-fab add-fab" aria-label=Add>
+    <div class=mdc-fab__ripple></div>
+    <span class="mdc-fab__icon material-icons">add</span>
+  </button>
+
+  <script src=bundle.js></script>
+</body>
+</html>
