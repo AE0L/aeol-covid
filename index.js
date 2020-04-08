@@ -4,6 +4,7 @@ const path        = require('path')
 const routes      = require('./routes')
 const covid       = require('./routes/covid')
 const body_parser = require('body-parser')
+const static_gzip = require('express-static-gzip')
 
 const { PORT, NODE_ENV } = require('./config')
 
@@ -19,7 +20,9 @@ if (NODE_ENV === 'development') {
 covid.setup()
 
 app.use(body_parser.json())
-app.use(express.static(path.join(__dirname, 'dist')))
+app.use('/', static_gzip(path.join(__dirname, 'dist'), {
+    enableBrotli: true,
+}))
 app.use(routes)
 
 app.listen(PORT, () => {

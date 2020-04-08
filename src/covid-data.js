@@ -32,9 +32,17 @@ async function covid_latest_date() {
     return new Date(data)
 }
 
+async function covid_country_list() {
+    const res  = await fetch('./country-list')
+    const data = await res.json()
+
+    return data
+}
+
 export default {
-    world:       covid_world,
-    country:     covid_country,
-    countries:   covid_countries,
-    latest_date: covid_latest_date
+    world:        covid_world,
+    country:      covid_country,
+    countries:    covid_countries,
+    latest_date:  covid_latest_date,
+    country_list: covid_country_list
 }

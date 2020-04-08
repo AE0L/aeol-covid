@@ -50,4 +50,8 @@ router.post('/countries', (req, res) => {
     res.json(result)
 })
 
+router.get('/country-list', (req, res) => {
+    res.json(covid.countries)
+})
+
 module.exports = router

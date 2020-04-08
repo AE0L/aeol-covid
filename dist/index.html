@@ -6,17 +6,21 @@
 
   <title>COVID-19 | Tracker</title>
 
-  <link href=build.css rel=stylesheet media="screen,projection">
-  <link href=css/index.css rel=stylesheet media="screen,projection">
+  <link href=css/fonts_icons.css rel=stylesheet media="screen">
+  <link href=build.css rel=stylesheet media="screen">
 </head>
-<body id=body>
-  <header id=top-app-bar class="mdc-top-app-bar mcd-top-app-bar--fixed">
+<body class=mdc-theme--background id=body>
+  <header id=top-app-bar class="mdc-top-app-bar mdc-top-app-bar--fixed docked light-theme">
     <div class="mdc-top-app-bar__row">
+      <div class="top-app-bar__overlay mdc-elevation-overlay"></div>
       <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
         <span class="mdc-top-app-bar__title">COVID-19</span>
       </section>
       <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role=toolbar>
-        <span class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="theme">brightness_low</span>
+        <button id=theme-change class="mdc-top-app-bar__action-item mdc-icon-button" aria-label="theme">
+          <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">brightness_4</i>
+          <i class="material-icons mdc-icon-button__icon">brightness_5</i>
+        </button>
       </section>
     </div>
   </header>
@@ -26,28 +30,35 @@
       <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
         <div class="mdc-theme--surface mdc-card">
           <div class="mdc-card__actions">
-            <span class="card__title mdc-theme--text-primary-on-dark">World</span>
-            <div class="mdc-card__action-icons">
-              <button class="material-icons mdc-icon-button mdc-card__action mdc-card__action-icon">more_vert</button>
+            <span class="card__title">World</span>
+            <div class="mdc-card__action-icons mdc-menu-surface--anchor">
+              <button id=button-menu-world class="material-icons mdc-icon-button mdc-card__action mdc-card__action-icon">more_vert</button>
+              <div id=menu-world class="mdc-menu mdc-menu-surface">
+                <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation=vertical tabindex="-1">
+                  <li class="mdc-list-item" role=menuitem>
+                    <span class=mdc-list-item__text>Remove</span>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
           
-          <div class="mdc-card__actions">
+          <div id=world-data-container class="mdc-card__actions hide">
             <div class="card__data-grid mdc-layout-grid">
               <div class="mdc-layout-grid__inner">
                 <div class="mdc-layout-grid__cell--span-12-tablet mdc-layout-grid__cell--span-12-phone mdc-layout-grid__cell--span-4-desktop">
                   <div class="mdc-layout-grid__cell">
-                    <div class="card__label">Confirmed Cases</div>
+                    <div class="card__label mdc-theme--text-secondary-on-background">Confirmed Cases</div>
                   </div>
                   <div class="mdc-layout-grid__cell">
                     <div class=mdc-layout-grid__cell>
-                      <span class="card__value mdc-theme--text-primary-on-dark" id=world-confirmed>0,000,000</span>
+                      <span class="card__value confirmed" id=world-confirmed>0,000,000</span>
                     </div>
                   </div>
                 </div>
                 <div class="mdc-layout-grid__cell--span-4-tablet mdc-layout-grid__cell--span-12-phone mdc-layout-grid__cell--span-4-desktop">
                  <div class="mdc-layout-grid__cell">
-                    <div class="card__label">Deaths</div>
+                    <div class="card__label mdc-theme--text-secondary-on-background">Deaths</div>
                   </div>
                   <div class="mdc-layout-grid__cell">
                     <div class=mdc-layout-grid__cell>
@@ -57,7 +68,7 @@
                 </div>
                 <div class="mdc-layout-grid__cell--span-4-tablet mdc-layout-grid__cell--span-12-phone mdc-layout-grid__cell--span-4-desktop">
                   <div class="mdc-layout-grid__cell">
-                    <div class="card__label">Recovered</div>
+                    <div class="card__label mdc-theme--text-secondary-on-background">Recovered</div>
                   </div>
                   <div class="mdc-layout-grid__cell">
                     <div class=mdc-layout-grid__cell>
@@ -73,11 +84,52 @@
     </div>
   </main>
 
+  <div id=add-dialog class="mdc-dialog">
+    <div class=mdc-dialog__container>
+      <div class=mdc-dialog__surface role="adddialog" aria-modal=true aria-labelledby="add-dialog-title"aria-describedby="add-dialog-content">
+        <h2 id=add-dialog-title class="mdc-dialog__title">Add country to watchlist</h2>
+
+        <div id=add-dialog-content class=mdc-dialog__content>
+          <div id=add-dialog-select class="mdc-select mdc-select--outlined">
+            <div class="mdc-select__anchor">
+              <i class="mdc-select__dropdown-icon"></i>
+              <div  class="mdc-select__selected-text" aria-labelledby="outlined-select-label"></div>
+              <span class="mdc-notched-outline">
+                <span class="mdc-notched-outline__leading"></span>
+                <span class="mdc-notched-outline__notch">
+                  <span id="outlined-select-label" class="mdc-floating-label">Choose a country</span>
+                </span>
+                <span class="mdc-notched-outline__trailing"></span>
+              </span>
+            </div>
+
+            <div class="mdc-select__menu mdc-menu mdc-menu-surface" role="listbox">
+              <ul id=add-dialog-select-menu class="mdc-list"></ul> 
+            </div>
+          </div> 
+        </div>
+
+        <footer class=mdc-dialog__actions>
+          <button type=button class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">
+            <div class=mdc-button__ripple></div>
+            <span class="mdc-button__label">Cancel</span>
+          </button>
+
+          <button autofocus type=button class="mdc-button mdc-dialog__button" data-mdc-dialog-action="add" data-mdc-dialog-button-default>
+            <div class=mdc-button__ripple></div>
+            <span id=dialog-add-button class="mdc-button__label">Add</span>
+          </button>
+        </footer>
+      </div>
+    </div>
+    <div class=mdc-dialog__scrim></div>
+  </div>
+
   <button id=add-fab class="mdc-fab add-fab" aria-label=Add>
     <div class=mdc-fab__ripple></div>
     <span class="mdc-fab__icon material-icons">add</span>
   </button>
 
-  <script src=bundle.js></script>
+  <script src=bundle.js async></script>
 </body>
 </html>
