@@ -9,10 +9,14 @@ import { country_list        } from './covid-data.js'
 import { el                  } from './utils.js'
 import { style_remove        } from './utils.js'
 import { style_apply         } from './utils.js'
+import { get_config          } from './covid-config.js'
+import { update_config       } from './covid-config.js'
+import { add_to_countries    } from './covid-config.js'
 import Clusterize              from 'clusterize.js'
 import Fuse                    from 'fuse.js'
 import add_country             from './add-country.js'
 import change_theme            from './theme-changer.js'
+
 
 async function setup_app_bar() {
     const app_bar = el('top-app-bar')
@@ -38,7 +42,8 @@ async function setup_app_bar() {
     }
 }
 
-async function setup_search_bar() {
+
+async function setup_search_bar(config) {
     const countries               = await country_list()
     const search_btn              = el('search-btn')
     const search_bar              = el('search-app-bar')
@@ -112,6 +117,7 @@ async function setup_search_bar() {
         const { confirmed, deaths, recovered } = await country_data(country_name)
 
         add_country(country_name, confirmed, deaths, recovered)
+        config.save_country(country_name, confirmed, deaths, recovered)
     })
 
     search_clear.onclick = function() {
@@ -140,14 +146,21 @@ async function setup_search_bar() {
     }
 }
 
-async function setup_theme_changer() {
-    const theme_change = new MDCIconButtonToggle(el('theme-change'))
 
-    theme_change.listen(
-        'MDCIconButtonToggle:change',
-        ({ detail: { isOn }}) => change_theme(isOn ? 'dark' : 'light')
-    )
+async function setup_theme_changer(config_theme) {
+    const change_btn   = el('theme-change')
+    const theme_change = new MDCIconButtonToggle(change_btn)
+
+    change_theme(config_theme)
+    theme_change.on = config_theme === 'dark'
+
+    theme_change.listen('MDCIconButtonToggle:change', ({ detail: { isOn }}) => {
+        const new_theme = isOn ? 'dark' : 'light'
+        change_theme(new_theme)
+        update_config({ theme: new_theme })
+    })
 }
+
 
 function clear_children(el) {
     while (el.lastChild) {
@@ -155,7 +168,6 @@ function clear_children(el) {
     }
 }
 
-async function setup_add_dialog() {}
 
 function setup_ripples() {
     [].map.call(document.querySelectorAll('.ripple'), (e) => {
@@ -165,10 +177,21 @@ function setup_ripples() {
     })
 }
 
+
+function setup_cards(config) {
+    config.countries.filter(c => c.name !== 'World').forEach(({ name, confirmed, deaths, recovered }) => {
+        add_country(name, confirmed, deaths, recovered, scroll=false)
+    })
+}
+
+
+
 export default async function material_setup() {
-    setup_search_bar()
+    const config = await get_config()
+
+    setup_theme_changer(config.theme)
     setup_app_bar()
-    setup_theme_changer()
-    setup_add_dialog()
+    setup_search_bar(config)
+    setup_cards(config)
     setup_ripples()
 }

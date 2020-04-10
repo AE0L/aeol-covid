@@ -1,14 +1,11 @@
-import { 
-  el,
-  el_create,
-  append_child,
-} from './utils.js'
+import { el, el_create, append_child } from './utils.js'
+import { add_to_countries } from './covid-config.js'
 
-export default function add_country(country, confirmed, deaths, recovered) {
+export default function add_country(country, confirmed, deaths, recovered, scroll=true) {
     confirmed = confirmed.toLocaleString()
     deaths    = deaths.toLocaleString()
     recovered = recovered.toLocaleString()
-    
+
     const html = `
       <div class="themed mdc-card">
         <div class=mdc-elevation-overlay></div>
@@ -72,5 +69,7 @@ export default function add_country(country, confirmed, deaths, recovered) {
 
     append_child('card-container', card_cell)
 
-    card_cell.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    if (scroll) {
+      card_cell.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
 }

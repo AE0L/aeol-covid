@@ -29,7 +29,7 @@ async function latest_date() {
     const res  = await fetch('./latest-date')
     const data = res.json()
 
-    return new Date(data)
+    return data
 }
 
 async function country_list() {
