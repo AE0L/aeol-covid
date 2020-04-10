@@ -113,3 +113,9 @@ web_modules/
 .yarn/unplugged
 .yarn/build-state.yml
 .pnp.*
+
+
+dist/bundle.js
+dist/bundle.js.*
+dist/build.css
+dist/build.css.*

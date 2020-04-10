@@ -9,12 +9,15 @@ const static_gzip = require('express-static-gzip')
 const { PORT, NODE_ENV } = require('./config')
 
 if (NODE_ENV === 'development') {
-    const webpack     = require('webpack')
-    const webpackDev  = require('webpack-dev-middleware')
-    const config      = require('./webpack.config.js')
-    const compiler    = webpack(config)
+    var webpack  = require('webpack');
+    var config   = require('./webpack.config.js');
+    var compiler = webpack(config);
 
-    app.use(webpackDev(compiler, { publicPath: '/' }))
+    app.use(require("webpack-dev-middleware")(compiler, {
+        noInfo: true, publicPath: config.output.publicPath
+    }));
+
+    app.use(require('webpack-hot-middleware')(compiler));
 }
 
 covid.setup()

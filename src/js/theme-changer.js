@@ -2,7 +2,7 @@ const themes = {
     light: {
         primary: '#121212',
         secondary: '#43A047',
-        background: '#FFF',
+        background: '#fafafa',
         surface: '#FFF',
         error: '#b00020',
         "on-primary": '#fff',
@@ -94,27 +94,34 @@ const themes = {
 
 const e       = i => document.getElementById(i)
 const app_bar = e('top-app-bar')
+const search_bar = e('search-app-bar')
+
+const _root          = document.documentElement
+const set_root_style = (p, v) => _root.style.setProperty(p, v)
 
 export default function change_theme(theme) {
-    const root = document.documentElement
-    const set_style = (p, v) => root.style.setProperty(p, v)
-    const use_theme = themes[theme]
-
-    for (const prop of Object.keys(use_theme)) {
-        if (prop !== 'text') {
-            set_style(`--mdc-theme-${prop}`, use_theme[prop])
-        }
-    }
-
-    for (const prop of Object.keys(use_theme.text)) {
-        const text = use_theme.text[prop]
-
-        for (const on_prop of Object.keys(text)) {
-            set_style(`--mdc-theme-text-${prop}-on-${on_prop}`, text[on_prop])
-        }
-    }
-
-    const curr_theme = theme === 'dark' ? 'light' : 'dark'
-
-    app_bar.classList.replace(`${curr_theme}-theme`, `${theme}-theme`)
+    e('body').dataset.theme = theme
 }
+
+// export default function change_theme(theme) {
+//     const use_theme = themes[theme]
+
+//     for (const prop of Object.keys(use_theme)) {
+//         if (prop !== 'text') {
+//             set_root_style(`--mdc-theme-${prop}`, use_theme[prop])
+//         }
+//     }
+
+//     for (const prop of Object.keys(use_theme.text)) {
+//         const text = use_theme.text[prop]
+
+//         for (const on_prop of Object.keys(text)) {
+//             set_root_style(`--mdc-theme-text-${prop}-on-${on_prop}`, text[on_prop])
+//         }
+//     }
+
+//     const curr_theme = theme === 'dark' ? 'light' : 'dark'
+
+//     app_bar.classList.replace(`${curr_theme}-theme`, `${theme}-theme`)
+//     search_bar.classList.replace(`${curr_theme}-theme`, `${theme}-theme`)
+// }

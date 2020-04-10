@@ -1,21 +1,22 @@
-import covid from './covid-data.js'
-import material_setup from './material-setup.js'
-import add_country from './add-country.js'
-
-const e = (i) => document.getElementById(i)
+import { world_data        } from './js/covid-data.js'
+import { el, el_text       } from './js/utils.js'
+import { performance_check } from './js/utils.js'
+import material_setup        from './js/material-setup.js'
+import add_country           from './js/add-country.js'
 
 async function setup() {
-    const world_data = await covid.world()
-    // const ph_data    = await covid.country('Philippines')
+    material_setup()
 
-    e('world-confirmed').innerText = world_data.confirmed.toLocaleString()
-    e('world-deaths').innerText    = world_data.deaths.toLocaleString()
-    e('world-recovered').innerText = world_data.recovered.toLocaleString()
+    const covid_world_data = await world_data()
+    const world_confirmed  = el('world-confirmed')
+    const world_deaths     = el('world-deaths')
+    const world_recovered  = el('world-recovered')
 
-    e('world-data-container').classList.remove('hide')
+    el_text(world_confirmed, covid_world_data.confirmed.toLocaleString())
+    el_text(world_deaths,    covid_world_data.deaths.toLocaleString())
+    el_text(world_recovered, covid_world_data.recovered.toLocaleString())
 
-    // add_country('Philippines', ph_data.confirmed, ph_data.deaths, ph_data.recovered)
+    el('world-card').classList.remove('hide')
 }
 
-material_setup()
-setup()
+performance_check(setup)

@@ -1,22 +1,28 @@
-const path         = require('path')
-const glob         = require('glob')
-const autoprefixer = require('autoprefixer')
-const CompressionPlugin = require('compression-webpack-plugin')
-const BrotliPlugin = require('brotli-webpack-plugin')
+const path              = require('path')
+const autoprefixer      = require('autoprefixer')
+const webpack           = require('webpack')
+const { NODE_ENV }      = require('./config')
+const hot_script        = 'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true'
+const path_node_modules = path.resolve(__dirname, 'node_modules')
+const path_src          = path.resolve(__dirname, 'src')
+const is_development    = NODE_ENV === 'development'
 
-const sass_src = path.join(__dirname, 'src', 'app.scss')
-const js_src   = path.join(__dirname, 'src', 'app.js')
+const entries = {
+  dev:  {
+   app:   ['webpack-hot-middleware/client?reload=true', './src/app.js'],
+   style: ['webpack-hot-middleware/client?reload=true', './src/style.scss']
+ },
+  prod: ['./src/app.js', './src/style.scss']
+}
 
-module.exports = {
-  mode: 'production',
-  entry: [sass_src, js_src],
-  output: {
-    path:     path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js',
-    publicPath: '/'
-  },
-  plugins: [
-    new CompressionPlugin({
+const plugins = {
+  dev: [
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoEmitOnErrorsPlugin()
+  ],
+  prod: [
+    new (require('compression-webpack-plugin'))({
       filename: '[path].gz[query]',
       algorithm: 'gzip',
       test: /\.(js|css|html)$/,
@@ -24,59 +30,63 @@ module.exports = {
       minRatio: 0.8
     }),
 
-    new BrotliPlugin({
+    new (require('brotli-webpack-plugin'))({
       asset: '[path].br[query]',
       test: /\.(js|css|html)$/,
       threshold: 1024,
       minRatio: 0.8
     })
-  ],
+  ]
+}
 
-  module: {
-    rules: [
-      {
-        test: /\.js/,
-        exclude: path.resolve(__dirname, 'node_modules'),
-        loader: 'babel-loader',
-        query: {
-          presets: [
-            ['@babel/preset-env', {
-              "useBuiltIns": "usage",
-            }]
-          ]
-        }
-      },
-
-      {
-        test: /\.scss/,
-        use: [
-          { loader: 'file-loader',
-            options: {
-              name: 'build.css'
-            },
-          },
-
-          { loader: 'extract-loader' },
-
-          { loader: 'css-loader' },
-
-          { loader: 'postcss-loader',
-            options: {
-              plugins: () => [autoprefixer()]
-            }
-          },
-
-          { loader: 'sass-loader',
-            options: {
-              webpackImporter: false,
-              implementation: require('sass'),
-              sassOptions: {
-                includePaths: [path.resolve(__dirname, 'node_modules')]
-              },
-            }
-          },
+const webpack_modules = {
+  rules: [
+    { test: /\.js/,
+      exclude: path_node_modules,
+      include: path_src,
+      loader: 'babel-loader',
+      query: {
+        presets: [
+          ['@babel/preset-env', {
+            "useBuiltIns": "usage",
+          }]
         ]
       }
-    ]
+    },
+
+    { test: /\.scss/,
+      use: [
+        { loader: 'file-loader', options: { name: 'build.css' } },
+        { loader: 'extract-loader' },
+        { loader: 'css-loader' },
+        { loader: 'postcss-loader', options: { plugins: () => [autoprefixer()] } },
+        { loader: 'sass-loader',
+          options: {
+            webpackImporter: false,
+            implementation: require('sass'),
+            sassOptions: { includePaths: [path_node_modules] },
+          }
+        },
+      ]
+    }
+  ]
+}
+
+// WEBPACK CONFIG
+webpack_config = {
+  mode:    NODE_ENV,
+  entry:   is_development ? entries.dev : entries.prod,
+  plugins: is_development ? plugins.dev : plugins.prod,
+  module:  webpack_modules,
+  output: {
+    path:     path.resolve(__dirname, 'dist'),
+    filename: 'bundle.js',
+    publicPath: '/'
   }
 }
+
+if (is_development) {
+  webpack_config.devtool = 'inline-source-map'
+}
+
+module.exports = webpack_config
