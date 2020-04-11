@@ -202,7 +202,7 @@ function setup_cards(config) {
 
     { [].map.call(document.querySelectorAll('.card__menu'), attach_card_menu) }
 
-    context_menu.listen('MDCMenu:selected', () => {
+    context_menu.listen('MDCMenu:selected', (evt) => {
         const { country } = selected_card.dataset
         const card = el(`${country}-card`)
 
@@ -217,9 +217,20 @@ function setup_snackbar() {
     action_snackbar = new MDCSnackbar(el('action-snackbar'))
 }
 
+function disabled_list_item(evt) {
+    evt.stopPropagation()
+}
 
 export function attach_card_menu(e) {
     e.onclick = () => {
+        if (e.dataset.country === 'world') {
+            context_menu.setEnabled(0, false)
+            context_menu.getOptionByIndex(0).addEventListener('click', disabled_list_item)
+        } else {
+            context_menu.setEnabled(0, true)
+            context_menu.getOptionByIndex(0).removeEventListener('click', disabled_list_item)
+        }
+
         context_menu.setAnchorElement(e)
         context_menu.open = true
         selected_card = e
