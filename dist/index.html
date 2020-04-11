@@ -6,6 +6,19 @@
 
   <title>COVID-19 | Tracker</title>
 
+  <link href=webmanifest.json rel=manifest>
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+  <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#212121">
+  <link rel="shortcut icon" href="/icons/favicon.ico">
+
+  <meta name="apple-mobile-web-app-title" content="COVID-19">
+  <meta name="application-name" content="COVID-19">
+  <meta name="msapplication-TileColor" content="#fafafa">
+  <meta name="msapplication-config" content="/browserconfig.xml">
+  <meta name="theme-color" content="#fafafa">
+
   <link href=css/fonts_icons.css rel=stylesheet media="screen">
   <link href=build.css rel=stylesheet media="screen">
 </head>
@@ -62,7 +75,7 @@
             <span class="card__title">World</span>
 
             <div class="mdc-card__action-icons">
-              <button id=World-menu-btn data-country=world class="card__menu material-icons ripple mdc-icon-button mdc-card__action mdc-card__action-icon">more_vert</button>
+              <button data-country=world class="card__menu material-icons ripple mdc-icon-button mdc-card__action mdc-card__action-icon">more_vert</button>
             </div>
           </div>
          
@@ -149,33 +162,33 @@
       }
     }
 
-    const dev = false
+    if ('serviceWorker' in navigator) {
+      if (!navigator.serviceWorker.controller) {
+          navigator.serviceWorker
+            .register('covid-sw.js', { scope: '/' })
+            .then(reg => {
+              console.log(`[SERVICE WORKER] registered, scope: ${reg.scope}`)
 
-    if ('serviceWorker' in navigator && !dev) {
-        navigator.serviceWorker
-          .register('covid-sw.js', { scope: '/' })
-          .then(reg => {
-            console.log(`[SERVICE WORKER] registered, scope: ${reg.scope}`)
+              reg.onupdatefound = () =>{
+                new_worker = reg.installing
 
-            reg.onupdatefound = () =>{
-              new_worker = reg.installing
-
-              new_worker.onstatechange = () => {
-                console.log('state:', new_worker.state)
-
-                if(new_worker.state === 'installed') {
-                  if (navigator.serviceWorker.controller) {
-                    show_update(reg)
-                  }
-                }  
+                new_worker.onstatechange = () => {
+                  if(new_worker.state === 'installed') {
+                    if (navigator.serviceWorker.controller) {
+                      show_update(reg)
+                    }
+                  }  
+                }
               }
-            }
-          })
+            })
+        } else {
+          navigator.serviceWorker.oncontrollerchange = () => {
+            if (refreshing) return
 
-        navigator.serviceWorker.oncontrollerchange = () => {
-          if (refreshing) return
-          window.location.reload()
-          refreshing = true
+            window.location.reload()
+
+            refreshing = true
+          }
         }
     }
   </script>

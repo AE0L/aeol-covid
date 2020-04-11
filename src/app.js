@@ -30,4 +30,4 @@ async function setup() {
     material_setup()
 }
 
-performance_check(setup)
+setup()
