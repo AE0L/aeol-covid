@@ -1,13 +1,16 @@
-import { world_data        } from './js/covid-data.js'
-import { el, el_text       } from './js/utils.js'
-import { performance_check } from './js/utils.js'
-import { init_config       } from './js/covid-config.js'
-import { get_config        } from './js/covid-config.js'
-import material_setup        from './js/material-setup.js'
-import add_country           from './js/add-country.js'
+import { initialize_covid_data } from './js/covid-data.js'
+import { get_world_data        } from './js/covid-data.js'
+import { el, el_text           } from './js/utils.js'
+import { performance_check     } from './js/utils.js'
+import { init_config           } from './js/covid-config.js'
+import { get_config            } from './js/covid-config.js'
+import material_setup            from './js/material-setup.js'
+import add_country               from './js/add-country.js'
 
 async function setup() {
-    const covid_world_data = await world_data()
+    await initialize_covid_data()
+    
+    const covid_world_data = await get_world_data()
     const world_confirmed  = el('world-confirmed')
     const world_deaths     = el('world-deaths')
     const world_recovered  = el('world-recovered')

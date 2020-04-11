@@ -1,5 +1,8 @@
-import { el, el_create, append_child } from './utils.js'
+import { el               } from './utils.js'
+import { el_create        } from './utils.js'
+import { append_child     } from './utils.js'
 import { add_to_countries } from './covid-config.js'
+import { attach_card_menu } from './material-setup.js'
 
 export default function add_country(country, confirmed, deaths, recovered, scroll=true) {
     confirmed = confirmed.toLocaleString()
@@ -12,14 +15,7 @@ export default function add_country(country, confirmed, deaths, recovered, scrol
         <div class="mdc-card__actions">
           <span class="card__title">${country}</span>
           <div class="mdc-card__action-icons mdc-menu-surface--anchor">
-            <button id=button-menu-world class="card__menu material-icons mdc-icon-button mdc-card__action mdc-card__action-icon">more_vert</button>
-            <div id=menu-${country} class="mdc-menu mdc-menu-surface">
-              <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation=vertical tabindex="-1">
-                <li class="mdc-list-item" role=menuitem>
-                  <span class=mdc-list-item__text>Remove</span>
-                </li>
-              </ul>
-            </div>
+            <button id=${country}-menu-btn data-country=${country} class="card__menu material-icons mdc-icon-button mdc-card__action mdc-card__action-icon">more_vert</button>
           </div>
         </div>
         
@@ -63,11 +59,16 @@ export default function add_country(country, confirmed, deaths, recovered, scrol
     `
 
     const card_cell = el_create('div', {
-      attributes: { innerHTML: html },
-      classList:  [ 'mdc-layout-grid__cell', 'mdc-layout-grid__cell--span-12' ]
+      attributes: { 
+        id: `${country}-card`,
+        innerHTML: html 
+      },
+      classList:  [ 'mdc-layout-grid__cell', 'mdc-layout-grid__cell--span-12', 'card-cell']
     })
 
     append_child('card-container', card_cell)
+
+    attach_card_menu(el(`${country}-menu-btn`))
 
     if (scroll) {
       card_cell.scrollIntoView({ behavior: 'smooth', block: 'center' })

@@ -27,10 +27,12 @@
 @use '@material/select/mdc-select';
 @use '@material/textfield/mdc-text-field';
 @use '@material/textfield';
+@use '@material/snackbar/mdc-snackbar';
+@use '@material/snackbar';
 
 @import '~normalize.css';
 
-$animation-duration: 250ms;
+$animation-duration: 225ms;
 
 :root {
   --mdc-theme-death: #e53935;
@@ -249,11 +251,6 @@ $elevation-dp: (
   position: fixed;
   overflow-y: auto;
   z-index: 2;
-  transition: 
-    max-height
-    $animation-duration * 2
-    elevation.$transition-timing-function;
-
   will-change: max-height;
 
   &.show {
@@ -271,8 +268,6 @@ $elevation-dp: (
 
 .mdc-card {
   @include card.shape-radius(10px, false);
-
-  animation: animation.enter(fade-in, 350ms);
 
   [data-theme=dark] & {
     --mdc-theme-surface: var(--mdc-theme-background);
@@ -330,9 +325,17 @@ $elevation-dp: (
   }
 }
 
+.card-cell {
+  animation: animation.enter(fade-in, $animation-duration);
+
+  &.remove {
+    animation: animation.exit-permanent(fade-out, $animation-duration);
+  }
+}
+
 @keyframes fade-in {
   from {
-    transform: translateY(-80px);
+    transform: translateY(-50px);
     opacity: 0;
   }
 
@@ -342,10 +345,46 @@ $elevation-dp: (
   }
 }
 
+@keyframes fade-out {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  to {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+}
+
 .hide {
   display: none;
 }
 
 .mdc-list-item__text {
   color: var(--mdc-theme-text-primary-on-background);
+}
+
+.mdc-snackbar {
+  @include snackbar.position-leading();
+
+  [data-theme=light] & {
+    &__surface {
+      background: var(--mdc-theme-primary);
+    }
+
+    &__label {
+      color: var(--mdc-theme-on-primary);
+    }
+  }
+
+  [data-theme=dark] & {
+    &__surface {
+      background: #fafafa;
+    }
+
+    &__label {
+      color: theme.prop-value(text-primary-on-light);
+    }
+  }
 }

@@ -4,11 +4,13 @@ import { MDCIconButtonToggle } from '@material/icon-button'
 import { MDCMenu             } from '@material/menu'
 import { MDCList             } from '@material/list'
 import { MDCTextField        } from '@material/textfield'
-import { country_data        } from './covid-data.js'
-import { country_list        } from './covid-data.js'
+import { MDCSnackbar         } from '@material/snackbar'
+import { get_country         } from './covid-data.js'
+import { get_country_list    } from './covid-data.js'
 import { el                  } from './utils.js'
 import { style_remove        } from './utils.js'
 import { style_apply         } from './utils.js'
+import { remove_child        } from './utils.js'
 import { get_config          } from './covid-config.js'
 import { update_config       } from './covid-config.js'
 import { add_to_countries    } from './covid-config.js'
@@ -16,6 +18,8 @@ import Clusterize              from 'clusterize.js'
 import Fuse                    from 'fuse.js'
 import add_country             from './add-country.js'
 import change_theme            from './theme-changer.js'
+
+let action_snackbar = null
 
 
 async function setup_app_bar() {
@@ -44,7 +48,7 @@ async function setup_app_bar() {
 
 
 async function setup_search_bar(config) {
-    const countries               = await country_list()
+    const countries               = get_country_list()
     const search_btn              = el('search-btn')
     const search_bar              = el('search-app-bar')
     const search_field            = el('search-text-field')
@@ -114,10 +118,15 @@ async function setup_search_bar(config) {
 
         const country_name = result[index].item
 
-        const { confirmed, deaths, recovered } = await country_data(country_name)
+        try {
+            const { confirmed, deaths, recovered } = get_country(country_name)
 
-        add_country(country_name, confirmed, deaths, recovered)
-        config.save_country(country_name, confirmed, deaths, recovered)
+            add_country(country_name, confirmed, deaths, recovered)
+            config.save_country(country_name, confirmed, deaths, recovered)
+        } catch (e) {
+            action_snackbar.labelText = 'Please check your connection'
+            action_snackbar.open()
+        }
     })
 
     search_clear.onclick = function() {
@@ -178,12 +187,44 @@ function setup_ripples() {
 }
 
 
+let context_menu;
+let selected_card;
+
 function setup_cards(config) {
-    config.countries.filter(c => c.name !== 'World').forEach(({ name, confirmed, deaths, recovered }) => {
+    config.countries.forEach(({ name, confirmed, deaths, recovered }) => {
+        if (name === 'World') return
+
         add_country(name, confirmed, deaths, recovered, scroll=false)
+    });
+
+    context_menu = new MDCMenu(el('context-menu'))
+    context_menu.setFixedPosition(true)
+
+    { [].map.call(document.querySelectorAll('.card__menu'), attach_card_menu) }
+
+    context_menu.listen('MDCMenu:selected', () => {
+        const { country } = selected_card.dataset
+        const card = el(`${country}-card`)
+
+        config.remove_country(country)
+        card.classList.add('remove')
+        card.onanimationend = () => remove_child('card-container', card)
     })
 }
 
+
+function setup_snackbar() {
+    action_snackbar = new MDCSnackbar(el('action-snackbar'))
+}
+
+
+export function attach_card_menu(e) {
+    e.onclick = () => {
+        context_menu.setAnchorElement(e)
+        context_menu.open = true
+        selected_card = e
+    }
+}
 
 
 export default async function material_setup() {
@@ -193,5 +234,6 @@ export default async function material_setup() {
     setup_app_bar()
     setup_search_bar(config)
     setup_cards(config)
+    setup_snackbar()
     setup_ripples()
 }

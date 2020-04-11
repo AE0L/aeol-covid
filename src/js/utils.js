@@ -28,10 +28,19 @@ export const el_create = (e, o={attributes:null,classList:null}) => {
 
 export const append_child = (p, ...e) => {
     if (p instanceof HTMLElement) {
-        p.appendChild(e)
+        e.forEach(_e => p.appendChild(_e))
     } else if (typeof p === 'string') {
-        const pel = el(p)
-        e.forEach(c => pel.appendChild(c))
+        const _p = el(p)
+        e.forEach(c => _p.appendChild(c))
+    }
+}
+
+export const remove_child = (p, ...e) => {
+    if (p instanceof HTMLElement) {
+        e.forEach(_e => p.removeChild(_e))
+    } else if (typeof p === 'string') {
+        const _p = el(p)
+        e.forEach(c => _p.removeChild(c))
     }
 }
 

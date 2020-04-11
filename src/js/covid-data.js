@@ -1,42 +1,72 @@
-const fetch_body = (method, js) => ({
-    method: method,
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(js)
-})
+import storage_available from './test-local-storage.js'
 
-async function world_data() {
-    const res  = await fetch('/global')
-    const data = await res.json()
+let __DATA__ = undefined
 
-    return data
+async function fetch_data(req) {
+    const res = await fetch(`/${req}`)
+    return await res.json()
 }
 
-async function country_data(country) {
-    const res  = await fetch('/country', fetch_body('POST', { country: country }))
-    const data = await res.json()
+export async function initialize_covid_data() {
+    if (storage_available()) {
+        const stored_data = JSON.parse(localStorage.getItem('covid-world-data'))
 
-    return data
-}
-    
-async function countries_data(countries) {
-    const res  = await fetch('/countries', fetch_body('POST', { countries: countries })) 
-    const data = await res.json()
+        if (stored_data) {
+            const latest_date = await fetch_data('latest-date')
 
-    return data
-}
+            if (stored_data.date === latest_date) {
+                __DATA__ = stored_data
 
-async function latest_date() {
-    const res  = await fetch('./latest-date')
-    const data = res.json()
+                return
+            }
+        }
 
-    return data
-}
+        const update_data = await fetch_data('covid-world')
 
-async function country_list() {
-    const res  = await fetch('./country-list')
-    const data = await res.json()
+        __DATA__ = update_data
 
-    return data
+        localStorage.setItem('covid-world-data', JSON.stringify(update_data))
+    } 
 }
 
-export { world_data, country_data, countries_data, country_list, latest_date }
+export function get_country(country_name) {
+    const { result } = __DATA__
+
+    for (const country in result) {
+        if (country_name === country) {
+            return result[country_name]
+        }
+    }
+
+    throw `invalid country name: ${country_name}`
+}
+
+export function get_country_list() {
+    const { countries } = __DATA__
+
+    if (countries) {
+        return countries
+    }
+
+    throw 'country list not found'
+}
+
+export function get_world_data() {
+    const { world } = __DATA__
+
+    if (world) {
+        return  world
+    }
+
+    throw 'world data not found'
+}
+
+export function get_latest_date() {
+    const { date } = __DATA__
+
+    if (date) {
+        return date
+    }
+
+    throw 'latest date not found'
+}

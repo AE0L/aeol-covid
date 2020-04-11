@@ -53,20 +53,16 @@
 
   <main class="mdc-layout-grid mdc-top-app-bar--fixed-adjust">
     <div id=card-container class="main-container mdc-layout-grid__inner">
-      <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-        <div id=world-card class="themed mdc-card hide">
+
+      <div id=world-card class="hide card-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+        <div class="themed mdc-card">
           <div class=mdc-elevation-overlay></div>
+
           <div class="mdc-card__actions">
             <span class="card__title">World</span>
-            <div class="mdc-card__action-icons mdc-menu-surface--anchor">
-              <button id=button-menu-world class="card__menu material-icons ripple mdc-icon-button mdc-card__action mdc-card__action-icon">more_vert</button>
-              <div id=menu-world class="mdc-menu mdc-menu-surface">
-                <ul class="mdc-list" role="menu" aria-hidden="true" aria-orientation=vertical tabindex="-1">
-                  <li class="mdc-list-item" role=menuitem>
-                    <span class=mdc-list-item__text>Remove</span>
-                  </li>
-                </ul>
-              </div>
+
+            <div class="mdc-card__action-icons">
+              <button id=World-menu-btn data-country=world class="card__menu material-icons ripple mdc-icon-button mdc-card__action mdc-card__action-icon">more_vert</button>
             </div>
           </div>
          
@@ -77,26 +73,31 @@
                   <div class="mdc-layout-grid__cell">
                     <div class="card__label">Confirmed Cases</div>
                   </div>
+
                   <div class="mdc-layout-grid__cell">
                     <div class=mdc-layout-grid__cell>
                       <span class="card__value confirmed" id=world-confirmed>0,000,000</span>
                     </div>
                   </div>
                 </div>
+
                 <div class="mdc-layout-grid__cell--span-4-tablet mdc-layout-grid__cell--span-12-phone mdc-layout-grid__cell--span-4-desktop">
-                 <div class="mdc-layout-grid__cell">
+                  <div class="mdc-layout-grid__cell">
                     <div class="card__label">Deaths</div>
                   </div>
+
                   <div class="mdc-layout-grid__cell">
                     <div class=mdc-layout-grid__cell>
                       <span class="card__value death" id=world-deaths>0,000,000</span>
                     </div>
                   </div>
                 </div>
+
                 <div class="mdc-layout-grid__cell--span-4-tablet mdc-layout-grid__cell--span-12-phone mdc-layout-grid__cell--span-4-desktop">
                   <div class="mdc-layout-grid__cell">
                     <div class="card__label">Recovered</div>
                   </div>
+
                   <div class="mdc-layout-grid__cell">
                     <div class=mdc-layout-grid__cell>
                       <span class="card__value recovered" id=world-recovered>0,000,000</span>
@@ -109,8 +110,75 @@
         </div>
       </div>
     </div>
+
+    <div id=action-snackbar class="themed mdc-snackbar">
+      <div class="mdc-snackbar__surface">
+        <div class="mdc-snackbar__label" role="status" aria-live="polite">
+          This is a snackbar
+        </div>
+
+        <div class="mdc-snackbar__actions">
+          <button type="button" class="mdc-icon-button mdc-snackbar__action">
+            <span class="mdc-icon-button__icon material-icons">clear</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id=context-menu class="themed mdc-menu mdc-menu-surface">
+      <ul class=mdc-list>
+        <li class="ripple mdc-list-item">
+          <span class=mdc-list-item__text>Remove</span>
+        </li>
+      </ul>
+    </div>
   </main>
 
+  <button id=update-notification class=hide>
+    update application
+  </button>
+
+  <script>
+    let new_worker = null;
+    let refreshing = false
+
+    function show_update(reg) {
+      document.getElementById('update-notification').classList.remove('hide')
+      document.getElementById('update-notification').onclick = () => {
+        new_worker.postMessage({ action: 'skipWaiting' })
+      }
+    }
+
+    const dev = false
+
+    if ('serviceWorker' in navigator && !dev) {
+        navigator.serviceWorker
+          .register('covid-sw.js', { scope: '/' })
+          .then(reg => {
+            console.log(`[SERVICE WORKER] registered, scope: ${reg.scope}`)
+
+            reg.onupdatefound = () =>{
+              new_worker = reg.installing
+
+              new_worker.onstatechange = () => {
+                console.log('state:', new_worker.state)
+
+                if(new_worker.state === 'installed') {
+                  if (navigator.serviceWorker.controller) {
+                    show_update(reg)
+                  }
+                }  
+              }
+            }
+          })
+
+        navigator.serviceWorker.oncontrollerchange = () => {
+          if (refreshing) return
+          window.location.reload()
+          refreshing = true
+        }
+    }
+  </script>
   <script src=bundle.js async></script>
 </body>
 </html>

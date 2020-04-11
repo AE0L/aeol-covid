@@ -1,6 +1,6 @@
-import { latest_date }   from './covid-data.js'
-import { world_data  }   from './covid-data.js'
-import storage_available from './test-local-storage.js'
+import { get_latest_date } from './covid-data.js'
+import { get_world_data  } from './covid-data.js'
+import storage_available   from './test-local-storage.js'
 
 
 class CovidConfig {
@@ -8,25 +8,22 @@ class CovidConfig {
         if (config && config !== undefined) {
             this.theme       = config.theme
             this.countries   = config.countries
-            this.latest_date = config.latest_date
             this.new         = config.new
         } else {
             throw new Error(
-                'Cannot be called without config file, use static function build() instead.'
+                'Invalid class constructor invocation.'
             )
         }
     }
 
     static async build() {
-        const _world_data  = await world_data()
-        const _latest_date = await latest_date()
+        const _world_data  = get_world_data()
 
         const config = {
             theme:       'light',
             countries:   [
                 { name: 'World', ..._world_data }
             ],
-            latest_date: _latest_date,
             new: true
         }
 
@@ -37,7 +34,6 @@ class CovidConfig {
         const json = {}
 
         json.theme       = this.theme
-        json.latest_date = this.latest_date
         json.countries   = this.countries.map(e => ({...e}))
 
         return JSON.stringify(json)
@@ -51,10 +47,16 @@ class CovidConfig {
             recovered: recovered
         })
 
-        this.update()
+        this.update_storage()
     }
 
-    update() {
+    remove_country(country_name) {
+        this.countries = this.countries.filter(({ name }) => name !== country_name)
+
+        this.update_storage()
+    }
+
+    update_storage() {
         localStorage.setItem('covid-user-config', this.to_string())
     }
 }
@@ -93,10 +95,14 @@ export function get_config() {
     return __CONFIG__
 }
 
-export function update_config(o) {
-    for (const p in o) {
-        __CONFIG__[p] = o[p]
+export function update_config(obj) {
+    for (const prop in obj) {
+        if (prop in __CONFIG__) {
+            __CONFIG__[prop] = obj[prop]
+        } else {
+            throw new Error(`Invalid configuration property: ${prop}`)
+        }
     }
 
-    __CONFIG__.update()
+    __CONFIG__.update_storage()
 }

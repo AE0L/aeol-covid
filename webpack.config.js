@@ -2,18 +2,9 @@ const path              = require('path')
 const autoprefixer      = require('autoprefixer')
 const webpack           = require('webpack')
 const { NODE_ENV }      = require('./config')
-const hot_script        = 'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true'
 const path_node_modules = path.resolve(__dirname, 'node_modules')
 const path_src          = path.resolve(__dirname, 'src')
 const is_development    = NODE_ENV === 'development'
-
-const entries = {
-  dev:  {
-   app:   ['webpack-hot-middleware/client?reload=true', './src/app.js'],
-   style: ['webpack-hot-middleware/client?reload=true', './src/style.scss']
- },
-  prod: ['./src/app.js', './src/style.scss']
-}
 
 const plugins = {
   dev: [
@@ -75,7 +66,7 @@ const webpack_modules = {
 // WEBPACK CONFIG
 webpack_config = {
   mode:    NODE_ENV,
-  entry:   is_development ? entries.dev : entries.prod,
+  entry:   ['./src/app.js', './src/style.scss'],
   plugins: is_development ? plugins.dev : plugins.prod,
   module:  webpack_modules,
   output: {
