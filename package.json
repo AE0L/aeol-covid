@@ -6,7 +6,7 @@
   "scripts": {
     "start": "pm2-runtime start ecosystem.config.js --env production",
     "heroku-postbuild": "webpack --mode production --config ./webpack.config.js",
-    "start:dev": "webpack-dev-server"
+    "TODO": "leasot -x \"src/**/*.js\" > TODO.txt && type TODO.txt"
   },
   "author": "AE0L",
   "license": "ISC",
