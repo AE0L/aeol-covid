@@ -24,7 +24,7 @@ export default function add_country(country, confirmed, deaths, recovered, scrol
             <div class="mdc-layout-grid__inner">
               <div class="mdc-layout-grid__cell--span-12-tablet mdc-layout-grid__cell--span-12-phone mdc-layout-grid__cell--span-4-desktop">
                 <div class="mdc-layout-grid__cell">
-                  <div class="card__label">Confirmed Cases</div>
+                  <div class="card__label">Confirmed</div>
                 </div>
                 <div class="mdc-layout-grid__cell">
                   <div class=mdc-layout-grid__cell>
@@ -63,7 +63,7 @@ export default function add_country(country, confirmed, deaths, recovered, scrol
         id: `${country}-card`,
         innerHTML: html 
       },
-      classList:  [ 'mdc-layout-grid__cell', 'mdc-layout-grid__cell--span-12', 'card-cell']
+      classList:  [ 'mdc-layout-grid__cell', 'card-cell']
     })
 
     append_child('card-container', card_cell)

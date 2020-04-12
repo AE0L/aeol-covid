@@ -44,8 +44,6 @@
     <!-- UC Mobile Browser  -->
     <meta name="full-screen" content="yes">
     <meta name="browsermode" content="application">
-    <!-- Fitscreen  -->
-    <meta name="viewport" content="uc-fitscreen=yes"/>
     <!-- Layout mode -->
     <meta name="layoutmode" content="fitscreen">
     <!-- Orientation  -->
@@ -95,13 +93,13 @@
         </section>
       </div>
     </header>
-    <div id=search-result-container class="search-bar__list-container">
+    <div id=search-result-container class="search-bar__list-container collapsed" data-collapsed=true>
       <div id=search-result-list class="search-bar__list mdc-list">
       </div>
     </div>
     <main class="mdc-layout-grid mdc-top-app-bar--fixed-adjust">
       <div id=card-container class="main-container mdc-layout-grid__inner">
-        <div id=world-card class="hide card-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+        <div id=world-card class="hide card-cell mdc-layout-grid__cell">
           <div class="themed mdc-card">
             <div class=mdc-elevation-overlay></div>
             <div class="mdc-card__actions">
@@ -116,7 +114,7 @@
                 <div class="mdc-layout-grid__inner">
                   <div class="mdc-layout-grid__cell--span-12-tablet mdc-layout-grid__cell--span-12-phone mdc-layout-grid__cell--span-4-desktop">
                     <div class="mdc-layout-grid__cell">
-                      <div class="card__label">Confirmed Cases</div>
+                      <div class="card__label">Confirmed</div>
                     </div>
                     <div class="mdc-layout-grid__cell">
                       <div class=mdc-layout-grid__cell>
@@ -162,7 +160,8 @@
           </div>
         </div>
       </div>
-      <div id=context-menu class="themed mdc-menu mdc-menu-surface">
+      <div id=context-menu class="themed context-menu mdc-menu mdc-menu-surface">
+        <div class=mdc-elevation-overlay></div>
         <ul class=mdc-list>
           <li class="ripple mdc-list-item">
             <span class=mdc-list-item__text>Remove</span>
@@ -171,41 +170,43 @@
       </div>
     </main>
     <button id=update-notification class=hide>
-    update application
+      update application
     </button>
     <script>
     let new_worker = null;
     let refreshing = false
+
     function show_update(reg) {
-    document.getElementById('update-notification').classList.remove('hide')
-    document.getElementById('update-notification').onclick = () => {
-    new_worker.postMessage({ action: 'skipWaiting' })
+      document.getElementById('update-notification').classList.remove('hide')
+      document.getElementById('update-notification').onclick = () => {
+        new_worker.postMessage({ action: 'skipWaiting' })
+      }
     }
-    }
-    if ('serviceWorker' in navigator) {
-    if (!navigator.serviceWorker.controller) {
-    navigator.serviceWorker
-    .register('covid-sw.js', { scope: '/' })
-    .then(reg => {
-    console.log(`[SERVICE WORKER] registered, scope: ${reg.scope}`)
-    reg.onupdatefound = () =>{
-    new_worker = reg.installing
-    new_worker.onstatechange = () => {
-    if(new_worker.state === 'installed') {
-    if (navigator.serviceWorker.controller) {
-    show_update(reg)
-    }
-    }
-    }
-    }
-    })
+    if ('serviceWorker' in navigator && false) {
+      if (!navigator.serviceWorker.controller) {
+        navigator.serviceWorker
+          .register('covid-sw.js', { scope: '/' })
+          .then(reg => {
+            console.log(`[SERVICE WORKER] registered, scope: ${reg.scope}`)
+            reg.onupdatefound = () =>{
+              new_worker = reg.installing
+              new_worker.onstatechange = () => {
+                if(new_worker.state === 'installed') {
+                  if (navigator.serviceWorker.controller) {
+                    show_update(reg)
+                  }
+                }
+              }
+            }
+          })
     } else {
-    navigator.serviceWorker.oncontrollerchange = () => {
-    if (refreshing) return
-    window.location.reload()
-    refreshing = true
-    }
-    }
+      navigator.serviceWorker.oncontrollerchange = () => {
+          if (refreshing) return
+
+          window.location.reload()
+          refreshing = true
+        }
+      }
     }
     </script>
     <script src=bundle.js async></script>
