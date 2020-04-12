@@ -5,7 +5,7 @@
     "description": "Tracker for countries affected by the COVID-19 pandemic",
     "start_url": "/",
     "background_color": "#FAFAFA",
-    "display": "fullscreen",
+    "display": "standalong",
     "theme_color": "#FAFAFA",
     "orientation": "portrait",
     "icons": [
