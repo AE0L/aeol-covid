@@ -168,41 +168,19 @@ $elevation-dp: (
 .search-bar {
   @include elevation.elevation(0);
 
-  clip-path: circle(0%);
-  z-index: 5;
+  z-index: 3;
   transition: 
-    clip-path
-    $animation-duration 
-    elevation.$transition-timing-function
-    $animation-duration,
-
     box-shadow
     $animation-duration
     elevation.$transition-timing-function;
 
-  &.show {
-    &:not(.docked) {
-      transition: 
-        clip-path
-        $animation-duration
-        elevation.$transition-timing-function;
-    }
+  will-change: box-shadow;
 
+  &.show {
+    z-index: 5;
     &.docked {
       @include elevation.elevation(4);
-
-      transition: 
-        clip-path
-        $animation-duration
-        elevation.$transition-timing-function,
-
-        box-shadow
-        $animation-duration
-        elevation.$transition-timing-function 
-        $animation-duration;
     }
-
-    clip-path: circle(125%) !important;
   }
 
   .mdc-text-field {
@@ -245,24 +223,28 @@ $elevation-dp: (
   @extend .mdc-theme--surface;
   @extend .mdc-theme--on-surface;
 
-  height: 100%;
-  max-height: 0%;
   width: 100vw;
   position: fixed;
   overflow-y: auto;
   z-index: 2;
-  will-change: max-height;
+  will-change: transform;
+  transition: transform 5s;
+  transform-origin: top;
 
-  &.show {
+  &.expanded {
     @media (max-width: 599px) {
-      max-height: calc(100vh - 56px);
+      height: calc(100vh - 56px);
       padding-top: 56px;
     }
 
     @media (min-width: 600px) {
-      max-height: calc(100vh - 64px);
+      height: calc(100vh - 64px);
       padding-top: 64px;
     }
+  }
+
+  &.collapsed {
+    height: 1px;
   }
 }
 
@@ -326,6 +308,10 @@ $elevation-dp: (
 }
 
 .card-cell {
+  @extend .mdc-layout-grid__cell--span-12-phone;
+  @extend .mdc-layout-grid__cell--span-12-tablet;
+  @extend .mdc-layout-grid__cell--span-6-desktop;
+
   animation: animation.enter(fade-in, $animation-duration);
 
   &.remove {
@@ -361,10 +347,6 @@ $elevation-dp: (
   display: none;
 }
 
-.mdc-list-item__text {
-  color: var(--mdc-theme-text-primary-on-background);
-}
-
 .mdc-snackbar {
   @include snackbar.position-leading();
 
@@ -385,6 +367,15 @@ $elevation-dp: (
 
     &__label {
       color: theme.prop-value(text-primary-on-light);
+    }
+  }
+}
+
+.context-menu {
+  [data-theme=dark] & {
+    @include elevation.overlay-opacity(map.get($elevation-dp, '12dp'));
+    .mdc-list {
+      color: theme.prop-value(text-primary-on-dark);
     }
   }
 }
