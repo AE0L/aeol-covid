@@ -169,18 +169,12 @@
         </ul>
       </div>
     </main>
-    <button id=update-notification class=hide>
-      update application
-    </button>
     <script>
     let new_worker = null;
     let refreshing = false
 
     function show_update(reg) {
-      document.getElementById('update-notification').classList.remove('hide')
-      document.getElementById('update-notification').onclick = () => {
-        new_worker.postMessage({ action: 'skipWaiting' })
-      }
+	new_worker.postMessage({ action: 'skipWaiting' })
     }
     if ('serviceWorker' in navigator && false) {
       if (!navigator.serviceWorker.controller) {
