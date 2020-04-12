@@ -1,119 +1,132 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <title>COVID-19 | Tracker</title>
-
-  <link href=webmanifest.json rel=manifest>
-  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
-  <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#212121">
-  <link rel="shortcut icon" href="/icons/favicon.ico">
-
-  <meta name="apple-mobile-web-app-title" content="COVID-19">
-  <meta name="application-name" content="COVID-19">
-  <meta name="msapplication-TileColor" content="#fafafa">
-  <meta name="msapplication-config" content="/browserconfig.xml">
-  <meta name="theme-color" content="#fafafa">
-
-  <link href=css/fonts_icons.css rel=stylesheet media="screen">
-  <link href=build.css rel=stylesheet media="screen">
-</head>
-<body data-theme=light class="themed mdc-theme--background" id=body>
-  <header id=search-app-bar class="themed search-bar mdc-top-app-bar mdc-top-app-bar--fixed search-bar docked">
-    <div class="mdc-top-app-bar__row">
-      <div class="top-app-bar__overlay mdc-elevation-overlay"></div>
-      <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-        <button id=search-exit-btn class="ripple material-icons mdc-icon-button mdc-top-app-bar__navigation-icon">arrow_back</button>
-        <label id=search-text-field class="mdc-text-field mdc-text-field--no-label">
-          <input id=search-text-field-input type=text placeholder="Search Country" class=mdc-text-field__input autofocus>
-        </label>
-      </section>
-
-      <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
-        <button id=search-text-field-clear class="ripple search-clear-button material-icons mdc-icon-button mdc-top-app-bar__action-item">clear</button>
-      </section>
-    </div>
-  </header>
-
-  <header id=top-app-bar class="themed app-bar mdc-top-app-bar mdc-top-app-bar--fixed docked">
-    <div class="mdc-top-app-bar__row">
-      <div class="top-app-bar__overlay mdc-elevation-overlay"></div>
-      <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-        <span class="mdc-top-app-bar__title mdc-theme--on-primary">COVID-19</span>
-      </section>
-      <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role=toolbar>
-        <button id=search-btn class="ripple mdc-top-app-bar__action-item mdc-icon-button">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name=description content="A statistics tracker for countries affected by the COVID-19 pandemic.">
+    <meta name=keywords content="COVID-19, COVID, Corona Virus, Corona, Corona Virus Visualizations, Visualizations, Corona Virus App">
+    <title>COVID-19 | Tracker</title>
+    <link href=webmanifest.json rel=manifest>
+    <!-- Android -->
+    <meta name=theme-color content=#FAFAFA>
+    <meta name=mobile-web-app-capable content=yes>
+    <!-- IOS -->
+    <meta name=apple-mobile-wep-app-title content="COVID-19">
+    <meta name=apple-mobile-web-app-capable content=yes>
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <!-- Windows -->
+    <meta name=msapplication-navbutton-color content=#121212>
+    <meta name="msapplication-TileColor" content="#FAFAFA">
+    <meta name="msapplication-TileImage" content="/icons/mstile-150x150.png">
+    <meta name="msapplication-config" content="browserconfig.xml">
+    <!-- Pinned -->
+    <meta name="application-name" content="COVID-19 Tracker">
+    <meta name="msapplication-tooltip" content="COVID-19 Tracker">
+    <meta name="msapplication-starturl" content="/">
+    <!-- Tap highlighting  -->
+    <meta name="msapplication-tap-highlight" content="no">
+    <!-- UC Mobile Browser  -->
+    <meta name="full-screen" content="yes">
+    <meta name="browsermode" content="application">
+    <!-- Fitscreen  -->
+    <meta name="viewport" content="uc-fitscreen=yes"/>
+    <!-- Layout mode -->
+    <meta name="layoutmode" content="fitscreen">
+    <!-- Orientation  -->
+    <meta name="screen-orientation" content="portrait">
+    <!-- Icons -->
+    <link rel="shortcut icon" href="/icons/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+    <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#212121">
+    <meta name="application-name" content="COVID-19">
+    <meta name="msapplication-TileColor" content="#fafafa">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    <meta name="theme-color" content="#fafafa">
+    <link href=css/fonts_icons.css rel=stylesheet media="screen">
+    <link href=build.css rel=stylesheet media="screen">
+  </head>
+  <body data-theme=light class="themed mdc-theme--background" id=body>
+    <header id=search-app-bar class="themed search-bar mdc-top-app-bar mdc-top-app-bar--fixed search-bar docked">
+      <div class="mdc-top-app-bar__row">
+        <div class="top-app-bar__overlay mdc-elevation-overlay"></div>
+        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+          <button id=search-exit-btn class="ripple material-icons mdc-icon-button mdc-top-app-bar__navigation-icon">arrow_back</button>
+          <label id=search-text-field class="mdc-text-field mdc-text-field--no-label">
+            <input id=search-text-field-input type=text placeholder="Search Country" class=mdc-text-field__input autofocus>
+          </label>
+        </section>
+        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
+          <button id=search-text-field-clear class="ripple search-clear-button material-icons mdc-icon-button mdc-top-app-bar__action-item">clear</button>
+        </section>
+      </div>
+    </header>
+    <header id=top-app-bar class="themed app-bar mdc-top-app-bar mdc-top-app-bar--fixed docked">
+      <div class="mdc-top-app-bar__row">
+        <div class="top-app-bar__overlay mdc-elevation-overlay"></div>
+        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+          <span class="mdc-top-app-bar__title mdc-theme--on-primary">COVID-19</span>
+        </section>
+        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role=toolbar>
+          <button id=search-btn class="ripple mdc-top-app-bar__action-item mdc-icon-button">
           <span class="material-icons mdc-icon-button__icon mdc-theme--on-primary">search</span>
-        </button>
-
-        <button id=theme-change class="ripple mdc-top-app-bar__action-item mdc-icon-button">
+          </button>
+          <button id=theme-change class="ripple mdc-top-app-bar__action-item mdc-icon-button">
           <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on mdc-theme--on-primary">brightness_4</i>
           <i class="material-icons mdc-icon-button__icon mdc-theme--on-primary">brightness_5</i>
-        </button>
-      </section>
+          </button>
+        </section>
+      </div>
+    </header>
+    <div id=search-result-container class="search-bar__list-container">
+      <div id=search-result-list class="search-bar__list mdc-list">
+      </div>
     </div>
-  </header>
-
-
-  <div id=search-result-container class="search-bar__list-container">
-    <div id=search-result-list class="search-bar__list mdc-list">
-    </div>
-  </div>
-
-  <main class="mdc-layout-grid mdc-top-app-bar--fixed-adjust">
-    <div id=card-container class="main-container mdc-layout-grid__inner">
-
-      <div id=world-card class="hide card-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-        <div class="themed mdc-card">
-          <div class=mdc-elevation-overlay></div>
-
-          <div class="mdc-card__actions">
-            <span class="card__title">World</span>
-
-            <div class="mdc-card__action-icons">
-              <button data-country=world class="card__menu material-icons ripple mdc-icon-button mdc-card__action mdc-card__action-icon">more_vert</button>
+    <main class="mdc-layout-grid mdc-top-app-bar--fixed-adjust">
+      <div id=card-container class="main-container mdc-layout-grid__inner">
+        <div id=world-card class="hide card-cell mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+          <div class="themed mdc-card">
+            <div class=mdc-elevation-overlay></div>
+            <div class="mdc-card__actions">
+              <span class="card__title">World</span>
+              <div class="mdc-card__action-icons">
+                <button data-country=world class="card__menu material-icons ripple mdc-icon-button mdc-card__action mdc-card__action-icon">more_vert</button>
+              </div>
             </div>
-          </div>
-         
-          <div class="mdc-card__actions">
-            <div class="card__data-grid mdc-layout-grid">
-              <div class="mdc-layout-grid__inner">
-                <div class="mdc-layout-grid__cell--span-12-tablet mdc-layout-grid__cell--span-12-phone mdc-layout-grid__cell--span-4-desktop">
-                  <div class="mdc-layout-grid__cell">
-                    <div class="card__label">Confirmed Cases</div>
-                  </div>
-
-                  <div class="mdc-layout-grid__cell">
-                    <div class=mdc-layout-grid__cell>
-                      <span class="card__value confirmed" id=world-confirmed>0,000,000</span>
+            
+            <div class="mdc-card__actions">
+              <div class="card__data-grid mdc-layout-grid">
+                <div class="mdc-layout-grid__inner">
+                  <div class="mdc-layout-grid__cell--span-12-tablet mdc-layout-grid__cell--span-12-phone mdc-layout-grid__cell--span-4-desktop">
+                    <div class="mdc-layout-grid__cell">
+                      <div class="card__label">Confirmed Cases</div>
+                    </div>
+                    <div class="mdc-layout-grid__cell">
+                      <div class=mdc-layout-grid__cell>
+                        <span class="card__value confirmed" id=world-confirmed>0,000,000</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-
-                <div class="mdc-layout-grid__cell--span-4-tablet mdc-layout-grid__cell--span-12-phone mdc-layout-grid__cell--span-4-desktop">
-                  <div class="mdc-layout-grid__cell">
-                    <div class="card__label">Deaths</div>
-                  </div>
-
-                  <div class="mdc-layout-grid__cell">
-                    <div class=mdc-layout-grid__cell>
-                      <span class="card__value death" id=world-deaths>0,000,000</span>
+                  <div class="mdc-layout-grid__cell--span-4-tablet mdc-layout-grid__cell--span-12-phone mdc-layout-grid__cell--span-4-desktop">
+                    <div class="mdc-layout-grid__cell">
+                      <div class="card__label">Deaths</div>
+                    </div>
+                    <div class="mdc-layout-grid__cell">
+                      <div class=mdc-layout-grid__cell>
+                        <span class="card__value death" id=world-deaths>0,000,000</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-
-                <div class="mdc-layout-grid__cell--span-4-tablet mdc-layout-grid__cell--span-12-phone mdc-layout-grid__cell--span-4-desktop">
-                  <div class="mdc-layout-grid__cell">
-                    <div class="card__label">Recovered</div>
-                  </div>
-
-                  <div class="mdc-layout-grid__cell">
-                    <div class=mdc-layout-grid__cell>
-                      <span class="card__value recovered" id=world-recovered>0,000,000</span>
+                  <div class="mdc-layout-grid__cell--span-4-tablet mdc-layout-grid__cell--span-12-phone mdc-layout-grid__cell--span-4-desktop">
+                    <div class="mdc-layout-grid__cell">
+                      <div class="card__label">Recovered</div>
+                    </div>
+                    <div class="mdc-layout-grid__cell">
+                      <div class=mdc-layout-grid__cell>
+                        <span class="card__value recovered" id=world-recovered>0,000,000</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -122,76 +135,64 @@
           </div>
         </div>
       </div>
-    </div>
-
-    <div id=action-snackbar class="themed mdc-snackbar">
-      <div class="mdc-snackbar__surface">
-        <div class="mdc-snackbar__label" role="status" aria-live="polite">
-          This is a snackbar
-        </div>
-
-        <div class="mdc-snackbar__actions">
-          <button type="button" class="mdc-icon-button mdc-snackbar__action">
+      <div id=action-snackbar class="themed mdc-snackbar">
+        <div class="mdc-snackbar__surface">
+          <div class="mdc-snackbar__label" role="status" aria-live="polite">
+            This is a snackbar
+          </div>
+          <div class="mdc-snackbar__actions">
+            <button type="button" class="mdc-icon-button mdc-snackbar__action">
             <span class="mdc-icon-button__icon material-icons">clear</span>
-          </button>
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-
-    <div id=context-menu class="themed mdc-menu mdc-menu-surface">
-      <ul class=mdc-list>
-        <li class="ripple mdc-list-item">
-          <span class=mdc-list-item__text>Remove</span>
-        </li>
-      </ul>
-    </div>
-  </main>
-
-  <button id=update-notification class=hide>
+      <div id=context-menu class="themed mdc-menu mdc-menu-surface">
+        <ul class=mdc-list>
+          <li class="ripple mdc-list-item">
+            <span class=mdc-list-item__text>Remove</span>
+          </li>
+        </ul>
+      </div>
+    </main>
+    <button id=update-notification class=hide>
     update application
-  </button>
-
-  <script>
+    </button>
+    <script>
     let new_worker = null;
     let refreshing = false
-
     function show_update(reg) {
-      document.getElementById('update-notification').classList.remove('hide')
-      document.getElementById('update-notification').onclick = () => {
-        new_worker.postMessage({ action: 'skipWaiting' })
-      }
+    document.getElementById('update-notification').classList.remove('hide')
+    document.getElementById('update-notification').onclick = () => {
+    new_worker.postMessage({ action: 'skipWaiting' })
     }
-
+    }
     if ('serviceWorker' in navigator) {
-      if (!navigator.serviceWorker.controller) {
-          navigator.serviceWorker
-            .register('covid-sw.js', { scope: '/' })
-            .then(reg => {
-              console.log(`[SERVICE WORKER] registered, scope: ${reg.scope}`)
-
-              reg.onupdatefound = () =>{
-                new_worker = reg.installing
-
-                new_worker.onstatechange = () => {
-                  if(new_worker.state === 'installed') {
-                    if (navigator.serviceWorker.controller) {
-                      show_update(reg)
-                    }
-                  }  
-                }
-              }
-            })
-        } else {
-          navigator.serviceWorker.oncontrollerchange = () => {
-            if (refreshing) return
-
-            window.location.reload()
-
-            refreshing = true
-          }
-        }
+    if (!navigator.serviceWorker.controller) {
+    navigator.serviceWorker
+    .register('covid-sw.js', { scope: '/' })
+    .then(reg => {
+    console.log(`[SERVICE WORKER] registered, scope: ${reg.scope}`)
+    reg.onupdatefound = () =>{
+    new_worker = reg.installing
+    new_worker.onstatechange = () => {
+    if(new_worker.state === 'installed') {
+    if (navigator.serviceWorker.controller) {
+    show_update(reg)
     }
-  </script>
-  <script src=bundle.js async></script>
-</body>
+    }
+    }
+    }
+    })
+    } else {
+    navigator.serviceWorker.oncontrollerchange = () => {
+    if (refreshing) return
+    window.location.reload()
+    refreshing = true
+    }
+    }
+    }
+    </script>
+    <script src=bundle.js async></script>
+  </body>
 </html>
