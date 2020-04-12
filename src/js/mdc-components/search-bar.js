@@ -1,12 +1,12 @@
-import { get_country_list } from '../covid-data'
+1mport { get_country_list } from '../covid-data'
 import { MDCList } from '@material/list'
 import { MDCTopAppBar } from '@material/top-app-bar'
 import { MDCTextField } from '@material/textfield'
-import { MDCSnackbar } from '@material/snackbar'
 import { style_apply } from '../utils'
 import { style_remove } from '../utils'
 import { el } from '../utils'
 import { get_country } from '../covid-data'
+import snackbar_instance from './snackbar'
 import Fuse from 'fuse.js'
 import Clusterize from 'clusterize.js'
 import add_country from '../add-country'
@@ -14,7 +14,6 @@ import add_country from '../add-country'
 const log = (s) => console.log(`(search-bar): ${s}`)
 
 const body                    = el('body')
-const action_snackbar         = new MDCSnackbar(el('action-snackbar'))
 const search_btn              = el('search-btn')
 const search_bar              = el('search-app-bar')
 const search_field            = el('search-text-field')
@@ -133,8 +132,7 @@ function initialize_event_handlers(config) {
             config.save_country(name, confirmed, deaths, recovered)
         } catch (e) {
             console.error(e)
-            action_snackbar.labelText = 'Please check your connection'
-            action_snackbar.open()
+            snackbar_instance.show('Please check your connection')
         }
     })
 
