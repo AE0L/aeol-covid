@@ -66,7 +66,7 @@ const webpack_modules = {
 // WEBPACK CONFIG
 webpack_config = {
   mode:    NODE_ENV,
-  entry:   ['./src/app.js', './src/style.scss'],
+  entry:   ['./src/app.js', './src/main.scss'],
   plugins: is_development ? plugins.dev : plugins.prod,
   module:  webpack_modules,
   output: {
