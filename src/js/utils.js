@@ -1,18 +1,23 @@
-const _prop       = (p, e, v) => { e[p] = v }
+/** @format */
+
+const _prop = (p, e, v) => {
+    e[p] = v
+}
 const _prop_value = (p, e) => e[p]
 
-export const el           = (i) => document.getElementById(i)
-export const el_query     = (q) => document.querySelector(q)
-export const el_queryall  = (q) => document.querySelectorAll(q)
-export const el_text      = (e, t=null) => t ? _prop('innerText', e, t) : _prop_value('innerText', e)
+export const el = i => document.getElementById(i)
+export const el_query = q => document.querySelector(q)
+export const el_queryall = q => document.querySelectorAll(q)
+export const el_text = (e, t = null) =>
+    t ? _prop('innerText', e, t) : _prop_value('innerText', e)
 
-export const clear_children = (e) => {
+export const clear_children = e => {
     while (e.lastChild) {
         e.removeChild(e.lastChild)
     }
 }
 
-export const el_create = (e, o={attributes:null,classList:null}) => {
+export const el_create = (e, o = { attributes: null, classList: null }) => {
     const _e = document.createElement(e)
 
     if (o) {
@@ -62,7 +67,7 @@ export const style_remove = (s, ...e) => {
     }
 }
 
-export const performance_check = async (fn) => {
+export const performance_check = async fn => {
     const s = performance.now()
     await fn()
     const e = performance.now()

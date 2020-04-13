@@ -1,12 +1,20 @@
-import { el               } from './utils.js'
-import { el_create        } from './utils.js'
-import { append_child     } from './utils.js'
+/** @format */
+
+import { el } from './utils.js'
+import { el_create } from './utils.js'
+import { append_child } from './utils.js'
 import { add_to_countries } from './covid-config.js'
 import * as card_menu from './mdc-components/card-menu'
 
-export default function add_country(country, confirmed, deaths, recovered, scroll=true) {
+export default function add_country(
+    country,
+    confirmed,
+    deaths,
+    recovered,
+    scroll = true
+) {
     confirmed = confirmed.toLocaleString()
-    deaths    = deaths.toLocaleString()
+    deaths = deaths.toLocaleString()
     recovered = recovered.toLocaleString()
 
     const html = `
@@ -59,11 +67,11 @@ export default function add_country(country, confirmed, deaths, recovered, scrol
     `
 
     const card_cell = el_create('div', {
-      attributes: { 
-        id: `${country}-card`,
-        innerHTML: html 
-      },
-      classList:  [ 'mdc-layout-grid__cell', 'card-cell']
+        attributes: {
+            id: `${country}-card`,
+            innerHTML: html
+        },
+        classList: ['mdc-layout-grid__cell', 'card-cell']
     })
 
     append_child('card-container', card_cell)
@@ -71,6 +79,6 @@ export default function add_country(country, confirmed, deaths, recovered, scrol
     card_menu.attach(el(`${country}-menu-btn`))
 
     if (scroll) {
-      card_cell.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        card_cell.scrollIntoView({ behavior: 'smooth', block: 'center' })
     }
 }

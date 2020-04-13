@@ -1,3 +1,5 @@
+/** @format */
+
 import { get_country_list } from '../covid-data'
 import { MDCList } from '@material/list'
 import { MDCTopAppBar } from '@material/top-app-bar'
@@ -11,25 +13,25 @@ import Fuse from 'fuse.js'
 import Clusterize from 'clusterize.js'
 import add_country from '../add-country'
 
-const log = (s) => console.log(`(search-bar): ${s}`)
+const log = s => console.log(`(search-bar): ${s}`)
 
-const body                    = el('body')
-const search_btn              = el('search-btn')
-const search_bar              = el('search-app-bar')
-const search_field            = el('search-text-field')
-const search_field_input      = el('search-text-field-input')
-const search_clear            = el('search-text-field-clear')
-const search_exit             = el('search-exit-btn')
+const body = el('body')
+const search_btn = el('search-btn')
+const search_bar = el('search-app-bar')
+const search_field = el('search-text-field')
+const search_field_input = el('search-text-field-input')
+const search_clear = el('search-text-field-clear')
+const search_exit = el('search-exit-btn')
 const search_result_container = el('search-result-container')
-const search_result_list      = el('search-result-list')
-const search_result           = new MDCList(search_result_list)
+const search_result_list = el('search-result-list')
+const search_result = new MDCList(search_result_list)
 
 new MDCTopAppBar(search_bar)
 new MDCTextField(search_field)
 
-let countries;
-let fuse;
-let result_items;
+let countries
+let fuse
+let result_items
 const list_items = []
 
 // virualized list
@@ -39,16 +41,17 @@ const virtual_list = new Clusterize({
     show_no_data_row: false
 })
 
-
 function initialize_searching() {
     countries = get_country_list()
     fuse = new Fuse(countries, { threshold: 0 })
 
-    countries.forEach(country => list_items.push(`
+    countries.forEach(country =>
+        list_items.push(`
         <li class=mdc-list-item data-value=${country} role=option>
             <span class=mdc-list-item__text>${country}</span>
         </li>
-    `))
+    `)
+    )
 }
 
 function toggle_result_container() {
@@ -60,10 +63,13 @@ function toggle_result_container() {
             cont.classList.replace('collapsed', 'expanded')
             const { height: last } = cont.getBoundingClientRect()
 
-            cont.animate([
-                { transform: `scaleY(${first / last})` },
-                { transform: 'none' }
-            ], { duration: 125, easing: 'ease-out' })
+            cont.animate(
+                [
+                    { transform: `scaleY(${first / last})` },
+                    { transform: 'none' }
+                ],
+                { duration: 125, easing: 'ease-out' }
+            )
 
             cont.dataset.collapsed = false
         })
@@ -72,10 +78,10 @@ function toggle_result_container() {
             const { height } = cont.getBoundingClientRect()
             cont.classList.replace('expanded', 'collapsed')
 
-            cont.animate([
-                { transform: `scaleY(${height})` },
-                { transform: 'none' }
-            ], { duration: 125, easing: 'ease-in' })
+            cont.animate(
+                [{ transform: `scaleY(${height})` }, { transform: 'none' }],
+                { duration: 125, easing: 'ease-in' }
+            )
 
             cont.dataset.collapsed = true
         })
@@ -100,14 +106,16 @@ function initialize_event_handlers(config) {
         toggle_result_container()
     }
 
-    search_field_input.onkeyup = function() {
+    search_field_input.onkeyup = function () {
         const { value } = this
 
         if (value) {
             result_items = fuse.search(value)
 
             style_apply('show', search_clear)
-            virtual_list.update(result_items.map(({ refIndex: i }) => list_items[i]))
+            virtual_list.update(
+                result_items.map(({ refIndex: i }) => list_items[i])
+            )
         } else {
             style_remove('show', search_clear)
         }
@@ -120,7 +128,7 @@ function initialize_event_handlers(config) {
         style_remove('show', search_clear)
     }
 
-    search_result.listen('MDCList:action', async({ detail: { index }}) => {
+    search_result.listen('MDCList:action', async ({ detail: { index } }) => {
         hide_search_bar()
 
         const name = result_items[index].item
@@ -132,7 +140,11 @@ function initialize_event_handlers(config) {
             config.save_country(name, confirmed, deaths, recovered)
         } catch ({ code, msg }) {
             if (code === 'CD02') {
-                snackbar.show(`Can't get ${name}'${name[name.length - 1] === 's' ? '' : 's'} latest data`)
+                snackbar.show(
+                    `Can't get ${name}'${
+                        name[name.length - 1] === 's' ? '' : 's'
+                    } latest data`
+                )
             }
         }
     })

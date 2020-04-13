@@ -1,3 +1,5 @@
+/** @format */
+
 import { MDCSnackbar } from '@material/snackbar'
 import { el } from '../utils'
 
@@ -14,7 +16,6 @@ class Snackbar {
         this._self.open()
     }
 }
-
 
 export function show(msg, callback) {
     if (__INSTANCE__ !== null) {

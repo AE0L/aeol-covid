@@ -1,3 +1,5 @@
+/** @format */
+
 import { MDCMenu } from '@material/menu'
 import { el } from '../utils'
 import { remove_child } from '../utils'
@@ -6,7 +8,9 @@ import { get_config } from '../covid-config'
 const __ELEMENT__ = el('card-menu')
 let __INSTANCE__ = null
 
-function disable_list_item(evt) { evt.stopPropagation() }
+function disable_list_item(evt) {
+    evt.stopPropagation()
+}
 
 class CardMenu {
     constructor() {
@@ -14,7 +18,7 @@ class CardMenu {
         this._self.setFixedPosition(true)
         this._selected = null
 
-        this._self.listen('MDCMenu:selected', (evt) => {
+        this._self.listen('MDCMenu:selected', evt => {
             const { country } = this._selected.dataset
             const card = el(`${country}-card`)
 
@@ -32,7 +36,10 @@ class CardMenu {
         const item = this._self.getOptionByIndex(index)
 
         this._self.setEnabled(index, enabled)
-        item[enabled ? 'removeEventListener' : 'addEventListener']('click', disable_list_item)
+        item[enabled ? 'removeEventListener' : 'addEventListener'](
+            'click',
+            disable_list_item
+        )
     }
 
     attach(button) {
@@ -73,4 +80,3 @@ export function instance() {
         throw new Error('Card menu instance not initialized')
     }
 }
-

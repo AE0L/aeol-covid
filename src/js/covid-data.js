@@ -1,3 +1,5 @@
+/** @format */
+
 import storage_available from './test-local-storage.js'
 
 let __DATA__ = null
@@ -6,7 +8,7 @@ const ERROR = Object.freeze({
     CD01: { code: 'CD01', msg: 'COVID data already initialized' },
     CD02: { code: 'CD02', msg: 'COVID data not initialized' },
     CD03: { code: 'CD03', msg: 'Local storage not supported' },
-    CD04: (country) => ({ code: 'CDO4', msg: `Invaild country name ${country}`}),
+    CD04: country => ({ code: 'CDO4', msg: `Invaild country name ${country}` }),
     CD05: { code: 'CD05', msg: 'Country list not found' },
     CD06: { code: 'CD06', msg: 'World COVID data not found' },
     CD07: { code: 'CD07', msg: 'Latest date not found' }
@@ -18,17 +20,21 @@ async function fetch_data(req) {
 }
 
 function is_initialized() {
-    return __DATA__ !== null 
-        && 'date' in __DATA__ 
-        && 'world' in __DATA__ 
-        && 'countries' in __DATA__ 
-        && 'result' in __DATA__
+    return (
+        __DATA__ !== null &&
+        'date' in __DATA__ &&
+        'world' in __DATA__ &&
+        'countries' in __DATA__ &&
+        'result' in __DATA__
+    )
 }
 
 export async function initialize_covid_data() {
     if (!is_initialized()) {
         if (storage_available()) {
-            const stored_data = JSON.parse(localStorage.getItem('covid-world-data'))
+            const stored_data = JSON.parse(
+                localStorage.getItem('covid-world-data')
+            )
 
             if (stored_data) {
                 const latest_date = await fetch_data('latest-date')
@@ -44,7 +50,10 @@ export async function initialize_covid_data() {
 
             __DATA__ = update_data
 
-            localStorage.setItem('covid-world-data', JSON.stringify(update_data))
+            localStorage.setItem(
+                'covid-world-data',
+                JSON.stringify(update_data)
+            )
         } else {
             throw ERROR.CD03
         }
@@ -88,10 +97,10 @@ export function get_world_data() {
         const { world } = __DATA__
 
         if (world) {
-            return  world
+            return world
         }
 
-        throw new ERROR.CD06
+        throw new ERROR.CD06()
     } else {
         throw ERROR.CD02
     }

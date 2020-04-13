@@ -10,6 +10,12 @@
   },
   "author": "AE0L",
   "license": "ISC",
+  "prettier": {
+    "tabWidth": 4,
+    "semi": false,
+    "singleQuote": true,
+    "insertPragma": true
+  },
   "dependencies": {
     "@babel/core": "^7.9.0",
     "@babel/preset-env": "^7.9.0",
