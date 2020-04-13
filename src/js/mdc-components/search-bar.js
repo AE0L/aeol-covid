@@ -63,7 +63,7 @@ function toggle_result_container() {
             cont.animate([
                 { transform: `scaleY(${first / last})` },
                 { transform: 'none' }
-            ], { duration: 175, easing: 'ease-out' })
+            ], { duration: 125, easing: 'ease-out' })
 
             cont.dataset.collapsed = false
         })
@@ -75,7 +75,7 @@ function toggle_result_container() {
             cont.animate([
                 { transform: `scaleY(${height})` },
                 { transform: 'none' }
-            ], { duration: 175, easing: 'ease-in' })
+            ], { duration: 125, easing: 'ease-in' })
 
             cont.dataset.collapsed = true
         })

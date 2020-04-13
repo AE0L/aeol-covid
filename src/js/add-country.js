@@ -22,7 +22,7 @@ export default function add_country(country, confirmed, deaths, recovered, scrol
         <div id=world-data class="mdc-card__actions">
           <div class="card__data-grid mdc-layout-grid">
             <div class="mdc-layout-grid__inner">
-              <div class="mdc-layout-grid__cell--span-12-tablet mdc-layout-grid__cell--span-12-phone mdc-layout-grid__cell--span-4-desktop">
+              <div class="mdc-layout-grid__cell--span-12-tablet mdc-layout-grid__cell--span-12-phone mdc-layout-grid__cell--span-12-desktop">
                 <div class="mdc-layout-grid__cell">
                   <div class="card__label">Confirmed</div>
                 </div>
@@ -32,7 +32,7 @@ export default function add_country(country, confirmed, deaths, recovered, scrol
                   </div>
                 </div>
               </div>
-              <div class="mdc-layout-grid__cell--span-4-tablet mdc-layout-grid__cell--span-12-phone mdc-layout-grid__cell--span-4-desktop">
+              <div class="mdc-layout-grid__cell--span-4-tablet mdc-layout-grid__cell--span-12-phone mdc-layout-grid__cell--span-6-desktop">
                <div class="mdc-layout-grid__cell">
                   <div class="card__label">Deaths</div>
                 </div>
@@ -42,7 +42,7 @@ export default function add_country(country, confirmed, deaths, recovered, scrol
                   </div>
                 </div>
               </div>
-              <div class="mdc-layout-grid__cell--span-4-tablet mdc-layout-grid__cell--span-12-phone mdc-layout-grid__cell--span-4-desktop">
+              <div class="mdc-layout-grid__cell--span-4-tablet mdc-layout-grid__cell--span-12-phone mdc-layout-grid__cell--span-6-desktop">
                 <div class="mdc-layout-grid__cell">
                   <div class="card__label">Recovered</div>
                 </div>

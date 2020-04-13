@@ -3,8 +3,12 @@
 @use '@material/theme';
 
 .card-menu {
+  @extend .mdc-elevation-transition;
+  @include elevation.overlay-dimensions(100%, 100%, false);
+
   [data-theme=dark] & {
     @include elevation.overlay-opacity(map.get($elevation-dp, '12dp'));
+
     .mdc-list {
       color: theme.prop-value(text-primary-on-dark);
     }
