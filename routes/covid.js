@@ -52,11 +52,11 @@ async function fetch_latest_covid_data() {
 }
 
 function setup() {
-    cron.schedule('30 0,2,12 * * *', () => {
-        fetch_latest_covid_data()
-    })
-
     if (NODE_ENV === 'production') {
+	cron.schedule('30 0,2,12 * * *', () => {
+	    fetch_latest_covid_data()
+	})
+
         fetch_latest_covid_data()
     }
 }
