@@ -15,6 +15,8 @@ import { update_config       } from './covid-config.js'
 import { add_to_countries    } from './covid-config.js'
 import initialize_search_bar   from './mdc-components/search-bar'
 import initialize_snackbar     from './mdc-components/snackbar'
+import initialize_cardmenu     from './mdc-components/card-menu'
+import cardmenu_instance       from './mdc-components/card-menu'
 import Clusterize              from 'clusterize.js'
 import Fuse                    from 'fuse.js'
 import add_country             from './add-country.js'
@@ -66,49 +68,14 @@ function setup_ripples() {
     })
 }
 
-let context_menu;
-let selected_card;
-
 function setup_cards(config) {
     config.countries.forEach(({ name, confirmed, deaths, recovered }) => {
         if (name === 'World') return
 
         add_country(name, confirmed, deaths, recovered, scroll=false)
-    });
-
-    context_menu = new MDCMenu(el('context-menu'))
-    context_menu.setFixedPosition(true)
-
-    { [].map.call(document.querySelectorAll('.card__menu'), attach_card_menu) }
-
-    context_menu.listen('MDCMenu:selected', (evt) => {
-        const { country } = selected_card.dataset
-        const card = el(`${country}-card`)
-
-        config.remove_country(country)
-        card.classList.add('remove')
-        card.onanimationend = () => remove_child('card-container', card)
     })
-}
 
-function disabled_list_item(evt) {
-    evt.stopPropagation()
-}
-
-export function attach_card_menu(e) {
-    e.onclick = () => {
-        if (e.dataset.country === 'world') {
-            context_menu.setEnabled(0, false)
-            context_menu.getOptionByIndex(0).addEventListener('click', disabled_list_item)
-        } else {
-            context_menu.setEnabled(0, true)
-            context_menu.getOptionByIndex(0).removeEventListener('click', disabled_list_item)
-        }
-
-        context_menu.setAnchorElement(e)
-        context_menu.open = true
-        selected_card = e
-    }
+    { [].map.call(document.querySelectorAll('.card__menu'), cardmenu_instance.attach) }
 }
 
 export default async function material_setup() {
@@ -118,6 +85,7 @@ export default async function material_setup() {
     setup_app_bar()
     initialize_search_bar(config)
     initialize_snackbar()
+    initialize_cardmenu()
     setup_cards(config)
     setup_ripples()
 }
