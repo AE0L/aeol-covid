@@ -1,0 +1,97 @@
+@use 'sass:map';
+@use '@material/animation';
+@use '@material/card';
+@use '@material/elevation';
+
+.mdc-card {
+  @include card.shape-radius(10px, false);
+
+  [data-theme=dark] & {
+    --mdc-theme-surface: var(--mdc-theme-background);
+    --mdc-theme-death: #EF5350;
+    --mdc-theme-recovered: #66BB6A;
+
+    @include elevation.overlay-opacity(map.get($elevation-dp, '1dp'));
+
+    .card__label {
+      font-weight: normal;
+    }
+  }
+
+  [data-theme=light] & {
+    .card__label {
+      font-weight: bold;
+    }
+  }
+
+  .card__title {
+    @extend .mdc-theme--text-primary-on-background;
+
+    padding: 12px;
+  }
+
+  .card__data-grid {
+    width: 100%;
+  }
+
+  .card__menu {
+    @extend .mdc-theme--text-primary-on-background;
+  }
+
+  .card__label {
+    @extend .mdc-theme--text-secondary-on-background;
+
+    margin-bottom: 0.5rem;
+  }
+
+  .card__value {
+
+    &.confirmed {
+      @extend .mdc-theme--text-primary-on-background;
+    }
+
+    &.death {
+      color: var(--mdc-theme-death);
+    }
+
+    &.recovered {
+      color: var(--mdc-theme-recover);
+    }
+  }
+}
+
+.card-cell {
+  @extend .mdc-layout-grid__cell--span-12-phone;
+  @extend .mdc-layout-grid__cell--span-12-tablet;
+  @extend .mdc-layout-grid__cell--span-6-desktop;
+
+  animation: animation.enter(fade-in, $animation-duration-base);
+
+  &.remove {
+    animation: animation.exit-permanent(fade-out, $animation-duration-base);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  to {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+}

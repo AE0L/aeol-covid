@@ -1,0 +1,9 @@
+.mdc-card {
+    .card__title {
+        @extend .mdc-typography--headline6;
+    }
+
+    .card__value {
+        @extend .mdc-typography--headline4;
+    }
+}

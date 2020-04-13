@@ -3,7 +3,7 @@ import { el } from '../utils'
 import { remove_child } from '../utils'
 import { get_config } from '../covid-config'
 
-const __ELEMENT__ = el('context-menu')
+const __ELEMENT__ = el('card-menu')
 let __INSTANCE__ = null
 
 function disable_list_item(evt) { evt.stopPropagation() }

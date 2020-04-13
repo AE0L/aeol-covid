@@ -1,0 +1,83 @@
+@use 'sass:map';
+@use '@material/elevation';
+@use '@material/textfield';
+@use '@material/theme';
+
+.search-bar {
+  @extend .mdc-elevation-transition;
+  @include elevation.elevation(0);
+
+  z-index: 3;
+
+  &.show {
+    z-index: 5;
+
+    &.docked {
+      @include elevation.elevation(4);
+    }
+  }
+
+  .mdc-text-field {
+    width: 100%;
+  }
+
+  .search-clear-button {
+    visibility: hidden;
+
+    &.show {
+      visibility: visible;
+    }
+  }
+
+  [data-theme=light] & {
+    --mdc-theme-primary: var(--mdc-theme-background);
+    --mdc-theme-on-primary: var(--mdc-theme-text-primary-on-background);
+
+    .mdc-text-field {
+      @include textfield.fill-color(transparent);
+      @include textfield.ink-color(theme.prop-value(text-primary-on-light));
+      @include textfield.caret-color(theme.prop-value(text-primary-on-light));
+      @include textfield.placeholder-color(theme.prop-value(text-secondary-on-light));
+    }
+  }
+
+  [data-theme=dark] & {
+    @include elevation.overlay-opacity(map.get($elevation-dp, '8dp'));
+  }
+
+  .mdc-text-field {
+    @include textfield.fill-color(transparent);
+    @include textfield.ink-color(inherit);
+    @include textfield.caret-color(inherit);
+    @include textfield.placeholder-color(theme.prop-value(text-secondary-on-dark));
+  }
+}
+
+.search-bar__list-container {
+  @extend .mdc-theme--surface;
+  @extend .mdc-theme--on-surface;
+
+  width: 100vw;
+  position: fixed;
+  overflow-y: auto;
+  z-index: 2;
+  will-change: transform;
+  transition: transform 5s;
+  transform-origin: top;
+
+  &.expanded {
+    @media (max-width: 599px) {
+      height: calc(100vh - 56px);
+      padding-top: 56px;
+    }
+
+    @media (min-width: 600px) {
+      height: calc(100vh - 64px);
+      padding-top: 64px;
+    }
+  }
+
+  &.collapsed {
+    height: 1px;
+  }
+}

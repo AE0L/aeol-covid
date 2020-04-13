@@ -1,0 +1,23 @@
+@use '@material/elevation';
+
+@include elevation.overlay-common;
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: 'Muli', sans-serif;
+
+  &.no-scroll {
+    overflow-y: hidden;
+  }
+}
+
+.main-container {
+  padding-top: 1em;
+}
+
+.hide {
+  display: none;
+}

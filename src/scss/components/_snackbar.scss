@@ -1,0 +1,26 @@
+@use '@material/snackbar';
+@use '@material/theme';
+
+.mdc-snackbar {
+  @include snackbar.position-leading();
+
+  [data-theme=light] & {
+    &__surface {
+      background: var(--mdc-theme-primary);
+    }
+
+    &__label {
+      color: var(--mdc-theme-on-primary);
+    }
+  }
+
+  [data-theme=dark] & {
+    &__surface {
+      background: #fafafa;
+    }
+
+    &__label {
+      color: theme.prop-value(text-primary-on-light);
+    }
+  }
+}

@@ -16,7 +16,7 @@ function setup_ripples() {
     })
 }
 
-function setup_cards(config) {
+function setup_saved_countries(config) {
     config.countries.forEach(({ name, confirmed, deaths, recovered }) => {
         if (name === 'World') return
 
@@ -35,7 +35,7 @@ export default async function material_setup() {
     card_menu.initialize()
     snackbar.initialize()
 
-    setup_cards(config)
+    setup_saved_countries(config)
     setup_ripples()
 }
 

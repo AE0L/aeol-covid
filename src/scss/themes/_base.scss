@@ -1,0 +1,12 @@
+:root {
+  --mdc-theme-death: #e53935;
+  --mdc-theme-recover: #43A047;
+  --mdc-theme-label-weight: bold;
+}
+
+.themed {
+  &[data-theme=light]  { @extend %light-theme; }
+  &[data-theme=dark]   { @extend %dark-theme;  }
+  [data-theme=light] & { @extend %light-theme; }
+  [data-theme=dark]  & { @extend %dark-theme;  }
+}

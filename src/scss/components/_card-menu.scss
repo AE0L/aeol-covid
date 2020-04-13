@@ -1,0 +1,12 @@
+@use 'sass:map';
+@use '@material/elevation';
+@use '@material/theme';
+
+.card-menu {
+  [data-theme=dark] & {
+    @include elevation.overlay-opacity(map.get($elevation-dp, '12dp'));
+    .mdc-list {
+      color: theme.prop-value(text-primary-on-dark);
+    }
+  }
+}

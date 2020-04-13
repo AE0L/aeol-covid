@@ -1,0 +1,25 @@
+@use '@material/theme';
+
+%light-theme {
+  $on-primary:     theme.accessible-ink-color(#121212);
+  $on-secondary:   theme.accessible-ink-color(#43A047);
+  $on-surface:     theme.accessible-ink-color(#FFFFFF);
+  $text-primary:   theme.accessible-ink-color(#FAFAFA, primary);
+  $text-secondary: theme.accessible-ink-color(#FAFAFA, secondary);
+  $text-hint:      theme.accessible-ink-color(#FAFAFA, hint);
+  $text-disabled:  theme.accessible-ink-color(#FAFAFA, disabled);
+  $text-icon:      theme.accessible-ink-color(#FAFAFA, icon);
+
+  --mdc-theme-primary:                      #121212;
+  --mdc-theme-secondary:                    #43A047;
+  --mdc-theme-background:                   #FAFAFA;
+  --mdc-theme-surface:                      #FFF;
+  --mdc-theme-on-primary:                   #{$on-primary};
+  --mdc-theme-on-secondary:                 #{$on-secondary};
+  --mdc-theme-on-surface:                   #{$on-surface};
+  --mdc-theme-text-primary-on-background:   #{$text-primary};
+  --mdc-theme-text-secondary-on-background: #{$text-secondary};
+  --mdc-theme-text-hint-on-background:      #{$text-hint};
+  --mdc-theme-text-disabled-on-background:  #{$text-disabled};
+  --mdc-theme-text-icon-on-background:      #{$text-icon};
+}

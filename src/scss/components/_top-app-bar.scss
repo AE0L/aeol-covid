@@ -1,0 +1,38 @@
+@use 'sass:map';
+@use '@material/elevation';
+
+.mdc-top-app-bar {
+  @extend .mdc-elevation-transition;
+
+  @include elevation.overlay-dimensions(100%, 100%, false);
+}
+
+.app-bar {
+  z-index: 4;
+
+  [data-theme=light] & {
+    &.docked {
+      --mdc-theme-primary: var(--mdc-theme-background);
+      --mdc-theme-on-primary: var(--mdc-theme-text-primary-on-background);
+    }
+
+    &:not(.docked) {
+      transition:  
+        background
+        $animation-duration-base
+        elevation.$transition-timing-function;
+    }
+  }
+
+  [data-theme=dark] & {
+    &.docked {
+      --mdc-theme-primary: var(--mdc-theme-background);
+      --mdc-theme-on-primary: var(--mdc-theme-text-primary-on-background);
+    }
+
+    &:not(.docked) {
+      @include elevation.overlay-opacity(map.get($elevation-dp, '8dp'));
+    }
+  }
+}
+

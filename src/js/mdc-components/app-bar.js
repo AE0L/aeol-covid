@@ -12,16 +12,17 @@ const ERROR = {
 class AppBar {
     constructor() {
         this._self   = new MDCTopAppBar(__ELEMENT__)
-        this._docked = true
 
-        document.onscroll = function() {
-            const scrolling = this.documentElement.scrollTop > 0
+        let docked = true
 
-            if ((scrolling && !this._docked) || (!scrolling && this._docked)) return
+        document.onscroll = () => {
+            const scrolling = document.documentElement.scrollTop > 0
 
-            (scrolling ? style_remove : style_apply)('docked', __ELEMENT__) 
+            if ((scrolling && !docked) || (!scrolling && docked)) return
 
-            this._docked = !this._docked
+            (scrolling ? style_remove : style_apply)('docked', __ELEMENT__)
+
+            docked = !docked
         }
     }
 }

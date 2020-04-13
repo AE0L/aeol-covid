@@ -1,0 +1,17 @@
+@import 'scss/abstracts/variables';
+
+@import 'scss/vendors/material';
+@import '~normalize.css';
+
+@import 'scss/base/typography';
+
+@import 'scss/themes/base';
+@import 'scss/themes/dark';
+@import 'scss/themes/light';
+
+@import 'scss/components/base';
+@import 'scss/components/top-app-bar';
+@import 'scss/components/search-app-bar';
+@import 'scss/components/country-cards';
+@import 'scss/components/card-menu';
+@import 'scss/components/snackbar';

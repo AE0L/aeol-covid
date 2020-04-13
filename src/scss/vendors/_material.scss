@@ -1,0 +1,20 @@
+@use '@material/theme' with (
+  $background: #FAFAFA,
+  $secondary:  #E53935,
+  $primary:    #121212
+);
+@use '@material/theme/mdc-theme';
+@use '@material/typography' with (
+    $font-family: unquote('Muli, sans-serif')
+);
+@use '@material/typography/mdc-typography';
+@use '@material/card/mdc-card';
+@use '@material/elevation/mdc-elevation';
+@use '@material/icon-button/mdc-icon-button';
+@use '@material/layout-grid/mdc-layout-grid';
+@use '@material/list/mdc-list';
+@use '@material/menu/mdc-menu';
+@use '@material/menu-surface/mdc-menu-surface';
+@use '@material/snackbar/mdc-snackbar';
+@use '@material/textfield/mdc-text-field';
+@use '@material/top-app-bar/mdc-top-app-bar';
