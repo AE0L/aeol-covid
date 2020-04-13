@@ -18,7 +18,7 @@ if (NODE_ENV === 'development') {
         noInfo: true, publicPath: config.output.publicPath
     }));
 
-    // app.use(require('webpack-hot-middleware')(compiler));
+    app.use(require('webpack-hot-middleware')(compiler));
 }
 
 covid.setup()
