@@ -6,7 +6,7 @@ export const el_query     = (q) => document.querySelector(q)
 export const el_queryall  = (q) => document.querySelectorAll(q)
 export const el_text      = (e, t=null) => t ? _prop('innerText', e, t) : _prop_value('innerText', e)
 
-export const clear_children = (e) {
+export const clear_children = (e) => {
     while (e.lastChild) {
         e.removeChild(e.lastChild)
     }

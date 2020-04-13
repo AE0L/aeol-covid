@@ -2,7 +2,7 @@ import { el               } from './utils.js'
 import { el_create        } from './utils.js'
 import { append_child     } from './utils.js'
 import { add_to_countries } from './covid-config.js'
-import { attach_card_menu } from './material-setup.js'
+import * as card_menu from './mdc-components/card-menu'
 
 export default function add_country(country, confirmed, deaths, recovered, scroll=true) {
     confirmed = confirmed.toLocaleString()
@@ -68,7 +68,7 @@ export default function add_country(country, confirmed, deaths, recovered, scrol
 
     append_child('card-container', card_cell)
 
-    attach_card_menu(el(`${country}-menu-btn`))
+    card_menu.attach(el(`${country}-menu-btn`))
 
     if (scroll) {
       card_cell.scrollIntoView({ behavior: 'smooth', block: 'center' })

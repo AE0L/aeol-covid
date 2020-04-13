@@ -1,4 +1,4 @@
-1mport { get_country_list } from '../covid-data'
+import { get_country_list } from '../covid-data'
 import { MDCList } from '@material/list'
 import { MDCTopAppBar } from '@material/top-app-bar'
 import { MDCTextField } from '@material/textfield'
@@ -140,7 +140,7 @@ function initialize_event_handlers(config) {
 }
 
 
-export default function initialize_search_bar(config) {
+export function initialize_search_bar(config) {
     initialize_searching()
     initialize_event_handlers(config)
 }

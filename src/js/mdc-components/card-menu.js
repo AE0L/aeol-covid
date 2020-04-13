@@ -6,7 +6,9 @@ import { get_config } from '../covid-config'
 const __ELEMENT__ = el('context-menu')
 let __INSTANCE__ = null
 
-class ContextMenu {
+function disable_list_item(evt) { evt.stopPropagation() }
+
+class CardMenu {
     constructor() {
         this._self = new MDCMenu(__ELEMENT__)
         this._self.setFixedPosition(true)
@@ -29,36 +31,46 @@ class ContextMenu {
     _toggle_item(index, enabled) {
         const item = this._self.getOptionByIndex(index)
 
-        function disable_list_item(evt) { evt.stopPropagation() }
-
         this._self.setEnabled(index, enabled)
         item[enabled ? 'removeEventListener' : 'addEventListener']('click', disable_list_item)
     }
 
     attach(button) {
-        button.onclick = function() {
-            if (this.dataset.country === 'world') {
+        button.onclick = () => {
+            if (button.dataset.country === 'world') {
                 this._toggle_item(0, false)
             } else {
                 this._toggle_item(0, true)
-                this._self.setEnabled(0, true)
-                this._self.getOptionByIndex(0).removeEventListener('click', this._disable_list_item)
             }
 
-            this._self.setAnchorElement(e)
+            this._self.setAnchorElement(button)
             this._selected = button
             this._show()
         }
     }
 }
 
-export function initialize_cardmenu() {
-    if (__INSTANCE__ === null) {
-        __INSTANCE__ = new ContextMenu()
+export function attach(el) {
+    if (__INSTANCE__ !== null) {
+        __INSTANCE__.attach(el)
     } else {
-        throw new Error('ContextMenu already have an instance')
+        throw new Error('Card menu instance not initialized')
     }
 }
 
-export default __INSTANCE__ as cardmenu_instance
+export function initialize() {
+    if (__INSTANCE__ === null) {
+        __INSTANCE__ = new CardMenu()
+    } else {
+        throw new Error('Card menu instance already initialized')
+    }
+}
+
+export function instance() {
+    if (__INSTANCE__ !== null) {
+        return __INSTANCE__
+    } else {
+        throw new Error('Card menu instance not initialized')
+    }
+}
 

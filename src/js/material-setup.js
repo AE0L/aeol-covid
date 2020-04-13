@@ -13,10 +13,9 @@ import { remove_child        } from './utils'
 import { get_config          } from './covid-config.js'
 import { update_config       } from './covid-config.js'
 import { add_to_countries    } from './covid-config.js'
-import initialize_search_bar   from './mdc-components/search-bar'
-import initialize_snackbar     from './mdc-components/snackbar'
-import initialize_cardmenu     from './mdc-components/card-menu'
-import cardmenu_instance       from './mdc-components/card-menu'
+import { initialize_search_bar } from './mdc-components/search-bar'
+import { initialize_snackbar } from './mdc-components/snackbar'
+import * as card_menu from './mdc-components/card-menu'
 import Clusterize              from 'clusterize.js'
 import Fuse                    from 'fuse.js'
 import add_country             from './add-country.js'
@@ -75,7 +74,7 @@ function setup_cards(config) {
         add_country(name, confirmed, deaths, recovered, scroll=false)
     })
 
-    { [].map.call(document.querySelectorAll('.card__menu'), cardmenu_instance.attach) }
+    { [].map.call(document.querySelectorAll('.card__menu'), card_menu.attach) }
 }
 
 export default async function material_setup() {
@@ -84,8 +83,8 @@ export default async function material_setup() {
     setup_theme_changer(config.theme)
     setup_app_bar()
     initialize_search_bar(config)
+    card_menu.initialize()
     initialize_snackbar()
-    initialize_cardmenu()
     setup_cards(config)
     setup_ripples()
 }

@@ -1,4 +1,5 @@
 import { MDCSnackbar } from '@material/snackbar'
+import { el } from '../utils'
 
 const __ELEMENT__ = el('action-snackbar')
 
@@ -21,4 +22,4 @@ export function initialize_snackbar() {
     }
 }
 
-export default __INSTANCE__ as snackbar_intance
+export default __INSTANCE__
