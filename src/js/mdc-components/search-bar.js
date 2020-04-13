@@ -6,7 +6,7 @@ import { style_apply } from '../utils'
 import { style_remove } from '../utils'
 import { el } from '../utils'
 import { get_country } from '../covid-data'
-import snackbar_instance from './snackbar'
+import * as snackbar from './snackbar'
 import Fuse from 'fuse.js'
 import Clusterize from 'clusterize.js'
 import add_country from '../add-country'
@@ -130,9 +130,10 @@ function initialize_event_handlers(config) {
 
             add_country(name, confirmed, deaths, recovered)
             config.save_country(name, confirmed, deaths, recovered)
-        } catch (e) {
-            console.error(e)
-            snackbar_instance.show('Please check your connection')
+        } catch ({ code, msg }) {
+            if (code === 'CD02') {
+                snackbar.show(`Can't get ${name}'${name[name.length - 1] === 's' ? '' : 's'} latest data`)
+            }
         }
     })
 

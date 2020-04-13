@@ -15,7 +15,7 @@ import { update_config       } from './covid-config.js'
 import { add_to_countries    } from './covid-config.js'
 import * as search_bar from './mdc-components/search-bar'
 import * as card_menu from './mdc-components/card-menu'
-import { initialize_snackbar } from './mdc-components/snackbar'
+import * as snackbar from './mdc-components/snackbar'
 import Clusterize              from 'clusterize.js'
 import Fuse                    from 'fuse.js'
 import add_country             from './add-country.js'
@@ -84,7 +84,7 @@ export default async function material_setup() {
     setup_app_bar()
     search_bar.initialize(config)
     card_menu.initialize()
-    initialize_snackbar()
+    snackbar.initialize()
     setup_cards(config)
     setup_ripples()
 }

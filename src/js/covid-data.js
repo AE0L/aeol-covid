@@ -54,7 +54,6 @@ export async function initialize_covid_data() {
 }
 
 export function get_country(country_name) {
-    throw ERROR.CD02
     if (__DATA__ !== null) {
         const { result } = __DATA__
 
