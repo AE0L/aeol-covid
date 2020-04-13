@@ -13,9 +13,9 @@ import { remove_child        } from './utils'
 import { get_config          } from './covid-config.js'
 import { update_config       } from './covid-config.js'
 import { add_to_countries    } from './covid-config.js'
-import { initialize_search_bar } from './mdc-components/search-bar'
-import { initialize_snackbar } from './mdc-components/snackbar'
+import * as search_bar from './mdc-components/search-bar'
 import * as card_menu from './mdc-components/card-menu'
+import { initialize_snackbar } from './mdc-components/snackbar'
 import Clusterize              from 'clusterize.js'
 import Fuse                    from 'fuse.js'
 import add_country             from './add-country.js'
@@ -82,7 +82,7 @@ export default async function material_setup() {
 
     setup_theme_changer(config.theme)
     setup_app_bar()
-    initialize_search_bar(config)
+    search_bar.initialize(config)
     card_menu.initialize()
     initialize_snackbar()
     setup_cards(config)

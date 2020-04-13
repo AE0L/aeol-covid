@@ -139,8 +139,7 @@ function initialize_event_handlers(config) {
     search_exit.onclick = () => hide_search_bar()
 }
 
-
-export function initialize_search_bar(config) {
+export function initialize(config) {
     initialize_searching()
     initialize_event_handlers(config)
 }
