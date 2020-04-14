@@ -21,7 +21,6 @@ class AppBar {
             const scrolling = document.documentElement.scrollTop > 0
 
             if ((scrolling && !docked) || (!scrolling && docked)) return
-
             ;(scrolling ? style_remove : style_apply)('docked', __ELEMENT__)
 
             docked = !docked

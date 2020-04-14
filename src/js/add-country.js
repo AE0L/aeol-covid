@@ -6,13 +6,7 @@ import { append_child } from './utils.js'
 import { add_to_countries } from './covid-config.js'
 import * as card_menu from './mdc-components/card-menu'
 
-export default function add_country(
-    country,
-    confirmed,
-    deaths,
-    recovered,
-    scroll = true
-) {
+export default function add_country(country, confirmed, deaths, recovered, scroll = true) {
     confirmed = confirmed.toLocaleString()
     deaths = deaths.toLocaleString()
     recovered = recovered.toLocaleString()

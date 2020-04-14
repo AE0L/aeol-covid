@@ -48,9 +48,7 @@ class CovidConfig {
     }
 
     remove_country(country_name) {
-        this.countries = this.countries.filter(
-            ({ name }) => name !== country_name
-        )
+        this.countries = this.countries.filter(({ name }) => name !== country_name)
 
         this.update_storage()
     }
@@ -74,10 +72,7 @@ export async function init_config() {
             } else {
                 __CONFIG__ = await CovidConfig.build()
 
-                localStorage.setItem(
-                    'covid-user-config',
-                    __CONFIG__.to_string()
-                )
+                localStorage.setItem('covid-user-config', __CONFIG__.to_string())
             }
 
             return true

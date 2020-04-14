@@ -32,9 +32,7 @@ function is_initialized() {
 export async function initialize_covid_data() {
     if (!is_initialized()) {
         if (storage_available()) {
-            const stored_data = JSON.parse(
-                localStorage.getItem('covid-world-data')
-            )
+            const stored_data = JSON.parse(localStorage.getItem('covid-world-data'))
 
             if (stored_data) {
                 const latest_date = await fetch_data('latest-date')
@@ -50,10 +48,7 @@ export async function initialize_covid_data() {
 
             __DATA__ = update_data
 
-            localStorage.setItem(
-                'covid-world-data',
-                JSON.stringify(update_data)
-            )
+            localStorage.setItem('covid-world-data', JSON.stringify(update_data))
         } else {
             throw ERROR.CD03
         }

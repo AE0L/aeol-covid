@@ -63,13 +63,10 @@ function toggle_result_container() {
             cont.classList.replace('collapsed', 'expanded')
             const { height: last } = cont.getBoundingClientRect()
 
-            cont.animate(
-                [
-                    { transform: `scaleY(${first / last})` },
-                    { transform: 'none' }
-                ],
-                { duration: 125, easing: 'ease-out' }
-            )
+            cont.animate([{ transform: `scaleY(${first / last})` }, { transform: 'none' }], {
+                duration: 125,
+                easing: 'ease-out'
+            })
 
             cont.dataset.collapsed = false
         })
@@ -78,10 +75,10 @@ function toggle_result_container() {
             const { height } = cont.getBoundingClientRect()
             cont.classList.replace('expanded', 'collapsed')
 
-            cont.animate(
-                [{ transform: `scaleY(${height})` }, { transform: 'none' }],
-                { duration: 125, easing: 'ease-in' }
-            )
+            cont.animate([{ transform: `scaleY(${height})` }, { transform: 'none' }], {
+                duration: 125,
+                easing: 'ease-in'
+            })
 
             cont.dataset.collapsed = true
         })
@@ -113,9 +110,7 @@ function initialize_event_handlers(config) {
             result_items = fuse.search(value)
 
             style_apply('show', search_clear)
-            virtual_list.update(
-                result_items.map(({ refIndex: i }) => list_items[i])
-            )
+            virtual_list.update(result_items.map(({ refIndex: i }) => list_items[i]))
         } else {
             style_remove('show', search_clear)
         }
@@ -141,9 +136,7 @@ function initialize_event_handlers(config) {
         } catch ({ code, msg }) {
             if (code === 'CD02') {
                 snackbar.show(
-                    `Can't get ${name}'${
-                        name[name.length - 1] === 's' ? '' : 's'
-                    } latest data`
+                    `Can't get ${name}'${name[name.length - 1] === 's' ? '' : 's'} latest data`
                 )
             }
         }

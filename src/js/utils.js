@@ -8,8 +8,7 @@ const _prop_value = (p, e) => e[p]
 export const el = i => document.getElementById(i)
 export const el_query = q => document.querySelector(q)
 export const el_queryall = q => document.querySelectorAll(q)
-export const el_text = (e, t = null) =>
-    t ? _prop('innerText', e, t) : _prop_value('innerText', e)
+export const el_text = (e, t = null) => (t ? _prop('innerText', e, t) : _prop_value('innerText', e))
 
 export const clear_children = e => {
     while (e.lastChild) {

@@ -36,10 +36,7 @@ class CardMenu {
         const item = this._self.getOptionByIndex(index)
 
         this._self.setEnabled(index, enabled)
-        item[enabled ? 'removeEventListener' : 'addEventListener'](
-            'click',
-            disable_list_item
-        )
+        item[enabled ? 'removeEventListener' : 'addEventListener']('click', disable_list_item)
     }
 
     attach(button) {
