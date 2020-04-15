@@ -8,6 +8,7 @@ import * as card_menu from './mdc-components/card-menu'
 import * as snackbar from './mdc-components/snackbar'
 import * as theme_changer from './mdc-components/theme-changer'
 import * as app_bar from './mdc-components/app-bar'
+import * as dialog from './mdc-components/dialog'
 import add_country from './add-country.js'
 
 function setup_ripples() {
@@ -38,6 +39,7 @@ export default async function material_setup() {
     search_bar.initialize(config)
     card_menu.initialize()
     snackbar.initialize()
+    dialog.initialize()
 
     setup_saved_countries(config)
     setup_ripples()

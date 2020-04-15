@@ -20,7 +20,6 @@ export default function add_country(country, confirmed, deaths, recovered, scrol
             <button id=${country}-menu-btn data-country=${country} class="card__menu material-icons mdc-icon-button mdc-card__action mdc-card__action-icon">more_vert</button>
           </div>
         </div>
-        
         <div id=world-data class="mdc-card__actions">
           <div class="card__data-grid mdc-layout-grid">
             <div class="mdc-layout-grid__inner">
