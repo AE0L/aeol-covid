@@ -1,0 +1,15 @@
+@use '@material/dialog';
+@use '@material/theme';
+@use '@material/button';
+
+.mdc-dialog {
+  [data-theme=dark] & {
+    @include dialog.scrim-color(#121212, 75%);
+    @include dialog.title-ink-color(theme.prop-value(text-primary-on-dark));
+    @include dialog.content-ink-color(theme.prop-value(text-primary-on-dark));
+
+    .mdc-dialog__button.mdc-button {
+      color: var(--mdc-theme-text-primary-on-dark);
+    }
+  }
+}

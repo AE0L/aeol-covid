@@ -20,6 +20,7 @@ class ThemeChanger {
 
         this._self.listen('MDCIconButtonToggle:change', ({ detail: { isOn } }) => {
             this._change_theme(isOn ? 'dark' : 'light')
+            update_config({ theme: isOn ? 'dark' : 'light' })
         })
     }
 

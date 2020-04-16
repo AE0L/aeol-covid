@@ -1,4 +1,4 @@
-const CACHE = 'aeol-covid-offline-cache-1'
+const CACHE = 'aeol-covid-offline-cache-2'
 
 const PRE_CACHE = [
     '/',

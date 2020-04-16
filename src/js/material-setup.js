@@ -1,15 +1,12 @@
 /** @format */
 
 import { MDCRipple } from '@material/ripple'
-import { el } from './utils'
-import { get_config } from './covid-config.js'
-import * as search_bar from './mdc-components/search-bar'
-import * as card_menu from './mdc-components/card-menu'
-import * as snackbar from './mdc-components/snackbar'
-import * as theme_changer from './mdc-components/theme-changer'
-import * as app_bar from './mdc-components/app-bar'
-import * as dialog from './mdc-components/dialog'
 import add_country from './add-country.js'
+import { get_config } from './covid-config.js'
+import * as app_bar from './mdc-components/app-bar'
+import * as card_menu from './mdc-components/card-menu'
+import * as search_bar from './mdc-components/search-bar'
+import * as theme_changer from './mdc-components/theme-changer'
 
 function setup_ripples() {
     ;[].map.call(document.querySelectorAll('.ripple'), e => {
@@ -37,9 +34,6 @@ export default async function material_setup() {
     theme_changer.initialize(config)
     app_bar.initialize()
     search_bar.initialize(config)
-    card_menu.initialize()
-    snackbar.initialize()
-    dialog.initialize()
 
     setup_saved_countries(config)
     setup_ripples()

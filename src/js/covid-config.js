@@ -1,7 +1,6 @@
 /** @format */
 
-import { get_latest_date } from './covid-data.js'
-import { get_world_data } from './covid-data.js'
+import {get_world_data} from './covid-data.js'
 import storage_available from './test-local-storage.js'
 
 class CovidConfig {
@@ -9,7 +8,9 @@ class CovidConfig {
         if (config && config !== undefined) {
             this.theme = config.theme
             this.countries = config.countries
-            this.new = config.new
+            this.install_ignored = config.install_ignored
+            this.installed = config.installed
+            this.first_time = config.first_time
         } else {
             throw new Error('Invalid class constructor invocation.')
         }
@@ -21,7 +22,9 @@ class CovidConfig {
         const config = {
             theme: 'light',
             countries: [{ name: 'World', ..._world_data }],
-            new: true
+            install_ignored: false,
+            installed: false,
+            first_time: true
         }
 
         return new CovidConfig(config)
@@ -31,7 +34,10 @@ class CovidConfig {
         const json = {}
 
         json.theme = this.theme
+        json.install_ignored = this.install_ignored
         json.countries = this.countries.map(e => ({ ...e }))
+        json.installed = this.installed
+        json.first_time = this.first_time
 
         return JSON.stringify(json)
     }

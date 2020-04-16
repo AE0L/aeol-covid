@@ -24,14 +24,14 @@
     <meta name=twitter:description content="A statistics tracker for countries affected by the COVID-19 pandemic.">
     <meta name=twitter:image content=android-chromer-512x512.png>
     <!-- Android -->
-    <meta name=theme-color content=#FAFAFA>
+    <meta name=theme-color content=#212121>
     <meta name=mobile-web-app-capable content=yes>
     <!-- IOS -->
     <meta name=apple-mobile-wep-app-title content="COVID-19">
     <meta name=apple-mobile-web-app-capable content=yes>
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <!-- Windows -->
-    <meta name=msapplication-navbutton-color content=#121212>
+    <meta name=msapplication-navbutton-color content=#212121>
     <meta name="msapplication-TileColor" content="#FAFAFA">
     <meta name="msapplication-TileImage" content="/icons/mstile-150x150.png">
     <meta name="msapplication-config" content="browserconfig.xml">
@@ -57,7 +57,7 @@
     <meta name="application-name" content="COVID-19">
     <meta name="msapplication-TileColor" content="#fafafa">
     <meta name="msapplication-config" content="/browserconfig.xml">
-    <meta name="theme-color" content="#fafafa">
+    <meta name="theme-color" content="#212121">
     <link href=css/fonts_icons.css rel=stylesheet media="screen">
     <link href=build.css rel=stylesheet media="screen">
   </head>
@@ -108,7 +108,6 @@
                 <button data-country=world class="card__menu material-icons ripple mdc-icon-button mdc-card__action mdc-card__action-icon">more_vert</button>
               </div>
             </div>
-            
             <div class="mdc-card__actions">
               <div class="card__data-grid mdc-layout-grid">
                 <div class="mdc-layout-grid__inner">
@@ -168,41 +167,41 @@
           </li>
         </ul>
       </div>
+      <div id=main-dialog class="themed mdc-dialog">
+        <div class="mdc-dialog__container">
+          <div class="mdc-dialog__surface">
+            <h2 id=main-dialog-title class="mdc-dialog__title"></h2>
+            <div id=main-dialog-content class="mdc-dialog__content"></div>
+            <footer class="mdc-dialog__actions">
+              <button class="mdc-button mdc-dialog__button" data-mdc-dialog-action="">
+                <div class="mdc-button__ripple"></div>
+                <span id=main-dialog-secondary-label class="mdc-button__label"></span>
+              </button>
+              <button class="mdc-button mdc-dialog__button" data-mdc-dialog-action="" data-mdc-dialog-initial-focus data-mdc-dialog-button-default>
+                <div class="mdc-button__ripple"></div>
+                <span id=main-dialog-primary-label class="mdc-button__label"></span>
+              </button>
+            </footer>
+          </div>
+        </div>
+        <div class=mdc-dialog__scrim></div>
+      </div>
+      <div id="confirm-dialog" class="themed mdc-dialog">
+          <div class="mdc-dialog__container">
+              <div class="mdc-dialog__surface">
+                  <h2 id="confirm-dialog-title" class="mdc-dialog__title"></h2>
+                  <div id="confirm-dialog-content" class="mdc-dialog__content"></div>
+                  <footer class="mdc-dialog__actions">
+                      <button class="mdc-button mdc-dialog__button" data-mdc-dialog-action="confirm">
+                          <div class="mdc-button__ripple"></div>
+                          <span id="confirm-dialog-button-label" class="mdc-button__label"></span>
+                      </button>
+                  </footer>
+              </div>
+          </div>
+          <div class=mdc-dialog__scrim></div>
+      </div>
     </main>
-    <script>
-    let new_worker = null;
-    let refreshing = false
-
-    function show_update(reg) {
-	new_worker.postMessage({ action: 'skipWaiting' })
-    }
-    if ('serviceWorker' in navigator && false) {
-      if (!navigator.serviceWorker.controller) {
-        navigator.serviceWorker
-          .register('covid-sw.js', { scope: '/' })
-          .then(reg => {
-            console.log(`[SERVICE WORKER] registered, scope: ${reg.scope}`)
-            reg.onupdatefound = () =>{
-              new_worker = reg.installing
-              new_worker.onstatechange = () => {
-                if(new_worker.state === 'installed') {
-                  if (navigator.serviceWorker.controller) {
-                    show_update(reg)
-                  }
-                }
-              }
-            }
-          })
-    } else {
-      navigator.serviceWorker.oncontrollerchange = () => {
-          if (refreshing) return
-
-          window.location.reload()
-          refreshing = true
-        }
-      }
-    }
-    </script>
     <script src=bundle.js async></script>
   </body>
 </html>

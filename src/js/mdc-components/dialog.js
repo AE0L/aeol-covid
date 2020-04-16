@@ -1,17 +1,15 @@
+/** @format */
+
 import { MDCDialog } from '@material/dialog'
 import { el } from '../utils'
-1
-const __ELEMENT__  = el('main-dialog')
-let   __INSTANCE__ = null
 
-const ERROR = {
-    D01: { code: 'D01', msg: 'Dialog instance already initialized' },
-    D02: { code: 'D02', msg: 'Dialog instance not initialized' }
-}
+const __ELEMENT__ = el('main-dialog')
+let __INSTANCE__ = null
 
 class Dialog {
     constructor() {
         this._self = new MDCDialog(__ELEMENT__)
+        this._title = el('main-dialog-title')
         this._content = el('main-dialog-content')
         this._secondary = this._self.buttons_[0]
         this._primary = this._self.buttons_[1]
@@ -19,21 +17,23 @@ class Dialog {
         this._primary_label = el('main-dialog-primary-label')
     }
 
-    layout() {
-        this._self.layout()
-    }
-
-    open(content, primary, secondary, primary_action, secondary_action) {
+    open(title, content, primary, secondary, primary_action=null, secondary_action=null, on_close=null) {
+        this._title.innerText = title
         this._content.innerText = content
         this._primary_label.innerText = primary
         this._secondary_label.innerText = secondary
+        this._primary.dataset.mdcDialogAction = primary
+        this._secondary.dataset.mdcDialogAction = secondary
         this._self.open()
+        this._self.layout()
 
         this._self.listen('MDCDialog:closed', ({ detail: { action } }) => {
-            if (action === 'primary') {
+            if (action === primary && primary_action) {
                 primary_action()
-            } else {
+            } else if (action === secondary && secondary_action) {
                 secondary_action()
+            } else if (action === 'close' && on_close) {
+                on_close()
             }
         })
     }
@@ -43,18 +43,15 @@ class Dialog {
     }
 }
 
-export function open(...args) {
-    if (__INSTANCE__ !== null) {
-        __INSTANCE__.open(...args)
-    } else {
-        throw ERROR.D02
-    }
-}
-
-export function initialize() {
+function get_instance() {
     if (__INSTANCE__ === null) {
         __INSTANCE__ = new Dialog()
-    } else {
-        throw ERROR.D01
     }
+
+    return __INSTANCE__
 }
+
+export function open(...args) {
+    get_instance().open(...args)
+}
+

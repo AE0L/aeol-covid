@@ -1,19 +1,15 @@
 /** @format */
 
-import { get_country_list } from '../covid-data'
 import { MDCList } from '@material/list'
-import { MDCTopAppBar } from '@material/top-app-bar'
 import { MDCTextField } from '@material/textfield'
-import { style_apply } from '../utils'
-import { style_remove } from '../utils'
-import { el } from '../utils'
-import { get_country } from '../covid-data'
-import * as snackbar from './snackbar'
-import Fuse from 'fuse.js'
+import { MDCTopAppBar } from '@material/top-app-bar'
 import Clusterize from 'clusterize.js'
+import Fuse from 'fuse.js'
 import add_country from '../add-country'
-
-const log = s => console.log(`(search-bar): ${s}`)
+import { get_country, get_country_list } from '../covid-data'
+import { el, style_apply, style_remove } from '../utils'
+import * as snackbar from './snackbar'
+import * as config from '../covid-config'
 
 const body = el('body')
 const search_btn = el('search-btn')
@@ -29,10 +25,10 @@ const search_result = new MDCList(search_result_list)
 new MDCTopAppBar(search_bar)
 new MDCTextField(search_field)
 
-let countries
-let fuse
-let result_items
-const list_items = []
+let countries = null
+let fuse = null
+let result_items = null
+let list_items = null
 
 // virualized list
 const virtual_list = new Clusterize({
@@ -43,15 +39,7 @@ const virtual_list = new Clusterize({
 
 function initialize_searching() {
     countries = get_country_list()
-    fuse = new Fuse(countries, { threshold: 0 })
-
-    countries.forEach(country =>
-        list_items.push(`
-        <li class=mdc-list-item data-value=${country} role=option>
-            <span class=mdc-list-item__text>${country}</span>
-        </li>
-    `)
-    )
+    update_search()
 }
 
 function toggle_result_container() {
@@ -103,16 +91,17 @@ function initialize_event_handlers(config) {
         toggle_result_container()
     }
 
-    search_field_input.onkeyup = function () {
+    search_field_input.onkeyup = function() {
         const { value } = this
 
         if (value) {
             result_items = fuse.search(value)
 
             style_apply('show', search_clear)
-            virtual_list.update(result_items.map(({ refIndex: i }) => list_items[i]))
+            virtual_list.update(result_items.map(({ refIndex: i }) => list_items[i].element))
         } else {
             style_remove('show', search_clear)
+            virtual_list.clear()
         }
     }
 
@@ -133,16 +122,36 @@ function initialize_event_handlers(config) {
 
             add_country(name, confirmed, deaths, recovered)
             config.save_country(name, confirmed, deaths, recovered)
+            update_search()
         } catch ({ code, msg }) {
             if (code === 'CD02') {
                 snackbar.show(
-                    `Can't get ${name}'${name[name.length - 1] === 's' ? '' : 's'} latest data`
+                    `Can't get ${name}'${name[name.length - 1] === 's' ? '' : 's'} data`
                 )
             }
         }
     })
 
     search_exit.onclick = () => hide_search_bar()
+}
+
+export function update_search() {
+    const remove = config.get_config().countries.map(c => c.name)
+    const filtered = countries.filter(c => !remove.includes(c))
+
+    fuse = new Fuse(filtered, { threshold: 0 })
+    list_items = []
+
+    filtered.forEach(country => {
+        list_items.push({
+            country: country,
+            element: `
+                <li class=mdc-list-item data-value=${country} role=option>
+                    <span class=mdc-list-item__text>${country}</span>
+                </li>
+            `
+        })
+    })
 }
 
 export function initialize(config) {

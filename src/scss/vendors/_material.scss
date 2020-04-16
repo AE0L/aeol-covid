@@ -8,7 +8,9 @@
     $font-family: unquote('Muli, sans-serif')
 );
 @use '@material/typography/mdc-typography';
+@use '@material/button/mdc-button';
 @use '@material/card/mdc-card';
+@use '@material/dialog/mdc-dialog';
 @use '@material/elevation/mdc-elevation';
 @use '@material/icon-button/mdc-icon-button';
 @use '@material/layout-grid/mdc-layout-grid';

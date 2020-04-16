@@ -1,9 +1,9 @@
 /** @format */
 
 import { MDCMenu } from '@material/menu'
-import { el } from '../utils'
-import { remove_child } from '../utils'
 import { get_config } from '../covid-config'
+import { el, remove_child } from '../utils'
+import { update_search } from './search-bar'
 
 const __ELEMENT__ = el('card-menu')
 let __INSTANCE__ = null
@@ -18,11 +18,12 @@ class CardMenu {
         this._self.setFixedPosition(true)
         this._selected = null
 
-        this._self.listen('MDCMenu:selected', evt => {
+        this._self.listen('MDCMenu:selected', () => {
             const { country } = this._selected.dataset
             const card = el(`${country}-card`)
 
             get_config().remove_country(country)
+            update_search()
             card.classList.add('remove')
             card.onanimationend = () => remove_child('card-container', card)
         })
@@ -54,26 +55,14 @@ class CardMenu {
     }
 }
 
-export function attach(el) {
-    if (__INSTANCE__ !== null) {
-        __INSTANCE__.attach(el)
-    } else {
-        throw new Error('Card menu instance not initialized')
-    }
-}
-
-export function initialize() {
+function get_instance() {
     if (__INSTANCE__ === null) {
         __INSTANCE__ = new CardMenu()
-    } else {
-        throw new Error('Card menu instance already initialized')
     }
+
+    return __INSTANCE__
 }
 
-export function instance() {
-    if (__INSTANCE__ !== null) {
-        return __INSTANCE__
-    } else {
-        throw new Error('Card menu instance not initialized')
-    }
+export function attach(el) {
+    get_instance().attach(el)
 }

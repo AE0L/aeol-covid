@@ -11,24 +11,21 @@ class Snackbar {
         this._self = new MDCSnackbar(__ELEMENT__)
     }
 
-    show(message, callback) {
+    show(message) {
         this._self.labelText = message
         this._self.open()
     }
 }
 
-export function show(msg, callback) {
-    if (__INSTANCE__ !== null) {
-        __INSTANCE__.show(msg, callback)
-    } else {
-        throw new Error('Snackbar instance not initialized')
-    }
-}
-
-export function initialize() {
+function get_instance() {
     if (__INSTANCE__ === null) {
         __INSTANCE__ = new Snackbar()
-    } else {
-        throw new Error('Snackbar instance already initialized')
     }
+
+    return __INSTANCE__
 }
+
+export function show(msg, callback) {
+    get_instance().show(msg, callback)
+}
+
