@@ -1,4 +1,4 @@
-const CACHE = 'aeol-covid-offline-cache-2'
+const CACHE = 'aeol-covid-offline-cache-3'
 
 const PRE_CACHE = [
     '/',
@@ -41,10 +41,9 @@ self.addEventListener('message', (evt) => {
 
 self.addEventListener('install', (evt) => {
     evt.waitUntil(
-        caches.open(CACHE).then(cache => {
-            return cache.addAll(PRE_CACHE).then(() => {
-                return cache.add(OFFLINE_FALLBACK_PAGE)
-            })
+        caches.open(CACHE).then(async cache => {
+            await cache.addAll(PRE_CACHE)
+            return cache.add(OFFLINE_FALLBACK_PAGE)
         })
     )
 })
@@ -82,7 +81,7 @@ function network_first_fetch(evt) {
 
             return res
         })
-        .catch(err => {
+        .catch(() => {
             const cache_req = from_cache(evt.request)
 
             return cache_req
@@ -104,47 +103,41 @@ function cache_first_fetch(evt) {
                 return res
             },
 
-            function() {
-                return fetch(evt.request)
-                    .then(function(res) {
-                        evt.waitUntil(update_cache(evt.request, res.clone()))
-
-                        return res
-                    })
-                    .catch(function(err) {
-                        if (evt.request.destination !== 'document' || evt.request.mode !== 'navigate') {
-                            return
-                        }
-
-                        return caches.open(CACHE).then(cache => {
-                            return cache.match(OFFLINE_FALLBACK_PAGE)
-                        })
-                    })
+            async function() {
+                try {
+                    const res = await fetch(evt.request)
+                    evt.waitUntil(update_cache(evt.request, res.clone()))
+                    return res
+                }
+                catch (err) {
+                    if (evt.request.destination !== 'document' || evt.request.mode !== 'navigate') {
+                        return
+                    }
+                    const cache = await caches.open(CACHE)
+                    return cache.match(OFFLINE_FALLBACK_PAGE)
+                }
             }
         )
     )
 }
 
 
-function from_cache(req) {
+async function from_cache(req) {
+    const cache = await caches.open(CACHE)
+    const matching = await cache.match(req)
 
-    return caches.open(CACHE).then(cache => {
-        return cache.match(req).then(matching => {
-            if (!matching || matching.status === 404) {
-                return Promise.reject('not in cache')
-            }
+    if (!matching || matching.status === 404) {
+        return Promise.reject('not in cache')
+    }
 
-            return matching
-        })
-    })
+    return matching
 }
 
 
-function update_cache(req, res) {
+async function update_cache(req, res) {
     if (!is_do_not_cache(req.url)) {
-        return caches.open(CACHE).then(cache => {
-            return cache.put(req, res)
-        })
+        const cache = await caches.open(CACHE)
+        return cache.put(req, res)
     }
 
     return Promise.resolve()
