@@ -7,8 +7,13 @@ import * as config from './covid-config'
 const DEV = false
 
 function show_update_notification(worker) {
-    // TODO upadate notifier
-    worker.postMessage({ action: 'skipWaiting' })
+    dialog.open(
+        'New Update Found!',
+        'A new update was found, please reload the app to download the latest updates.',
+        'Reload',
+        'Later',
+        () => worker.postMessage({ action: 'skipWaiting' })
+    )
 }
 
 function register() {
@@ -17,6 +22,12 @@ function register() {
     if ('serviceWorker' in navigator && !DEV) {
         if (!navigator.serviceWorker.controller) {
             navigator.serviceWorker.register('covid-sw.js', { scope: '/' }).then(reg => {
+                if (DEV) {
+                    console.log(`Service worker registered with scope, ${reg.scope}`)
+                }
+            })
+        } else {
+            navigator.serviceWorker.getRegistration().then(reg => {
                 reg.onupdatefound = () => {
                     const worker = reg.installing
 
@@ -29,7 +40,7 @@ function register() {
                     }
                 }
             })
-        } else {
+
             navigator.serviceWorker.oncontrollerchange = () => {
                 if (refreshing) return
                 window.location.reload()
