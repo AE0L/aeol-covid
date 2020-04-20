@@ -16,7 +16,6 @@
     "singleQuote": true
   },
   "dependencies": {
-    "@babel/preset-typescript": "^7.9.0",
     "@types/clusterize.js": "^0.17.1",
     "body-parser": "^1.19.0",
     "clusterize.js": "^0.18.1",
