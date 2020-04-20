@@ -1,20 +1,17 @@
-/** @format */
+import { Country } from './covid-data'
+import CardMenu from './mdc-components/card-menu'
+import { append_child, el, el_create } from './utils'
 
-import * as card_menu from './mdc-components/card-menu'
-import {append_child, el, el_create} from './utils'
+export default function add_country(country: Country, scroll = true) {
+    const { name, confirmed, deaths, recovered } = country
 
-export default function add_country(country, confirmed, deaths, recovered, scroll = true) {
-    confirmed = confirmed.toLocaleString()
-    deaths = deaths.toLocaleString()
-    recovered = recovered.toLocaleString()
-
-    const html = `
+    const card_template = `
       <div class="themed mdc-card">
         <div class=mdc-elevation-overlay></div>
         <div class="mdc-card__actions">
-          <span class="card__title">${country}</span>
+          <span class="card__title">${name}</span>
           <div class="mdc-card__action-icons mdc-menu-surface--anchor">
-            <button id=${country}-menu-btn data-country=${country} class="card__menu material-icons mdc-icon-button mdc-card__action mdc-card__action-icon">more_vert</button>
+            <button id=${name}-menu-btn data-name=${name} class="card__menu material-icons mdc-icon-button mdc-card__action mdc-card__action-icon">more_vert</button>
           </div>
         </div>
         <div id=world-data class="mdc-card__actions">
@@ -26,7 +23,7 @@ export default function add_country(country, confirmed, deaths, recovered, scrol
                 </div>
                 <div class="mdc-layout-grid__cell">
                   <div class=mdc-layout-grid__cell>
-                    <span class="card__value confirmed">${confirmed}</span>
+                    <span class="card__value confirmed">${confirmed.toLocaleString()}</span>
                   </div>
                 </div>
               </div>
@@ -36,7 +33,7 @@ export default function add_country(country, confirmed, deaths, recovered, scrol
                 </div>
                 <div class="mdc-layout-grid__cell">
                   <div class=mdc-layout-grid__cell>
-                    <span class="card__value death">${deaths}</span>
+                    <span class="card__value death">${deaths.toLocaleString()}</span>
                   </div>
                 </div>
               </div>
@@ -46,7 +43,7 @@ export default function add_country(country, confirmed, deaths, recovered, scrol
                 </div>
                 <div class="mdc-layout-grid__cell">
                   <div class=mdc-layout-grid__cell>
-                    <span class="card__value recovered">${recovered}</span>
+                    <span class="card__value recovered">${recovered.toLocaleString()}</span>
                   </div>
                 </div>
               </div>
@@ -56,17 +53,17 @@ export default function add_country(country, confirmed, deaths, recovered, scrol
       </div>
     `
 
-    const card_cell = el_create('div', {
+    const card_cell = el_create('DIV', {
         attributes: {
-            id: `${country}-card`,
-            innerHTML: html
+            id: `${name}-card`,
+            innerHTML: card_template
         },
-        classList: ['mdc-layout-grid__cell', 'card-cell']
+        class_list: ['mdc-layout-grid__cell', 'card-cell']
     })
 
     append_child('card-container', card_cell)
 
-    card_menu.attach(el(`${country}-menu-btn`))
+    CardMenu.get_instance().attach(el(`${name}-menu-btn`))
 
     if (scroll) {
         card_cell.scrollIntoView({ behavior: 'smooth', block: 'center' })

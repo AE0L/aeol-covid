@@ -104,9 +104,6 @@
             <div class=mdc-elevation-overlay></div>
             <div class="mdc-card__actions">
               <span class="card__title">World</span>
-              <div class="mdc-card__action-icons">
-                <button data-country=world class="card__menu material-icons ripple mdc-icon-button mdc-card__action mdc-card__action-icon">more_vert</button>
-              </div>
             </div>
             <div class="mdc-card__actions">
               <div class="card__data-grid mdc-layout-grid">
@@ -170,16 +167,16 @@
       <div id=main-dialog class="themed mdc-dialog">
         <div class="mdc-dialog__container">
           <div class="mdc-dialog__surface">
-            <h2 id=main-dialog-title class="mdc-dialog__title"></h2>
-            <div id=main-dialog-content class="mdc-dialog__content"></div>
+            <h2 id=dialog-title class="mdc-dialog__title"></h2>
+            <div id=dialog-content class="mdc-dialog__content"></div>
             <footer class="mdc-dialog__actions">
-              <button class="mdc-button mdc-dialog__button" data-mdc-dialog-action="">
+              <button id=dialog-secondary class="mdc-button mdc-dialog__button" data-mdc-dialog-action="">
                 <div class="mdc-button__ripple"></div>
-                <span id=main-dialog-secondary-label class="mdc-button__label"></span>
+                <span class="mdc-button__label"></span>
               </button>
-              <button class="mdc-button mdc-dialog__button" data-mdc-dialog-action="" data-mdc-dialog-initial-focus data-mdc-dialog-button-default>
+              <button id=dialog-primary class="mdc-button mdc-dialog__button" data-mdc-dialog-action="" data-mdc-dialog-initial-focus data-mdc-dialog-button-default>
                 <div class="mdc-button__ripple"></div>
-                <span id=main-dialog-primary-label class="mdc-button__label"></span>
+                <span class="mdc-button__label"></span>
               </button>
             </footer>
           </div>
@@ -189,12 +186,12 @@
       <div id="confirm-dialog" class="themed mdc-dialog">
           <div class="mdc-dialog__container">
               <div class="mdc-dialog__surface">
-                  <h2 id="confirm-dialog-title" class="mdc-dialog__title"></h2>
+                  <h2 class="mdc-dialog__title"></h2>
                   <div id="confirm-dialog-content" class="mdc-dialog__content"></div>
                   <footer class="mdc-dialog__actions">
                       <button class="mdc-button mdc-dialog__button" data-mdc-dialog-action="confirm">
                           <div class="mdc-button__ripple"></div>
-                          <span id="confirm-dialog-button-label" class="mdc-button__label"></span>
+                          <span class="mdc-button__label"></span>
                       </button>
                   </footer>
               </div>
