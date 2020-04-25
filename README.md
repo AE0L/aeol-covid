@@ -1,5 +1,4 @@
 # COVID-19 Tracker
----
 Well there's nothing else to do in this quarantine  so I made a simple progressive web app that lets you save a list of countries and their latest COVID-19 pandemic statistics specifically the number of confirm cases, deaths, and successfully recovered COVID-19 patients.
 
 ## Installation
